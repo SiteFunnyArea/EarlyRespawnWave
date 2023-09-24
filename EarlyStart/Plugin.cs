@@ -35,10 +35,14 @@ namespace EarlyStart
         private void RegisterEvents()
         {
             _handlers = new EventHandlers();
+
+            Exiled.Events.Handlers.Server.RoundStarted += _handlers.OnRoundStarted;
         }
 
         private void UnregisterEvents()
         {
+            Exiled.Events.Handlers.Server.RoundStarted -= _handlers.OnRoundStarted;
+
             _handlers = null;
         }
     }
