@@ -1,4 +1,4 @@
-﻿namespace Exiled.Template
+﻿namespace EarlyStart
 {
     public class EventHandlers
     {

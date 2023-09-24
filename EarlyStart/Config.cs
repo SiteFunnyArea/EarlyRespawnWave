@@ -1,6 +1,6 @@
 ﻿using Exiled.API.Interfaces;
 
-namespace Exiled.Template
+namespace EarlyStart
 {
     public class Config : IConfig
     {

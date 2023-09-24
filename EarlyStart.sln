@@ -1,8 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Exiled.Template", "Exiled.Template\Exiled.Template.csproj", "{64FD0725-66EE-4245-B1EF-AF9B1300E03A}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Exiled.Template.Patches", "Exiled.Template.Patches\Exiled.Template.Patches.csproj", "{E99074E4-8074-47D8-9FB0-388AB9F26E34}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EarlyStart", "EarlyStart\EarlyStart.csproj", "{64FD0725-66EE-4245-B1EF-AF9B1300E03A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
