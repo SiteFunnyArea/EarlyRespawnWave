@@ -11,12 +11,13 @@ namespace EarlyStart
     {
 
         public float TimeElapsed = Plugin.Instance.Config.Seconds;
+        private static CoroutineHandle _timerCoroutine;
 
         public void OnRoundStarted()
         {
 
             PluginAPI.Core.Log.Debug($"{Plugin.Instance.Name} Round started.");
-            Timing.RunCoroutine(TimerCoroutine());
+            _timerCoroutine = Timing.RunCoroutine(TimerCoroutine());
             Timing.CallDelayed(Plugin.Instance.Config.Seconds, () =>
             {
                  Plugin.Instance.TimeOver = true;
@@ -26,17 +27,27 @@ namespace EarlyStart
             });
         }
 
+        public void OnChangingRole(ChangingRoleEventArgs ev)
+        {
+            if (ev.Player.UniqueRole.Contains("-SpawnAs"))
+            {
+                ev.Player.UniqueRole = "";
+            }
+        }
+
         public void OnRoundEnded(RoundEndedEventArgs ev) {
             
             Plugin.Instance.TimeOver = false;
             TimeElapsed = Plugin.Instance.Config.Seconds;
+            if (_timerCoroutine.IsRunning)
+                Timing.KillCoroutines(_timerCoroutine);
         }
 
         public void OnJoined(JoinedEventArgs ev)
         {
             if(Plugin.Instance.TimeOver == false)
             {
-                ev.Player.UniqueRole = ev.Player.UniqueRole + "-None";
+                ev.Player.UniqueRole = ev.Player.UniqueRole + "-SpawnAs None";
             }
         }
 
@@ -46,17 +57,17 @@ namespace EarlyStart
             {
                 if(ev.Player.Role.Team == PlayerRoles.Team.FoundationForces || ev.Player.Role.Team == PlayerRoles.Team.Scientists)
                 {
-                    ev.Player.UniqueRole = ev.Player.UniqueRole + "-SpawnAsRRT";
+                    ev.Player.UniqueRole = ev.Player.UniqueRole + "-SpawnAs RRT";
                 }else if (ev.Player.Role.Team == PlayerRoles.Team.ClassD || ev.Player.Role.Team == PlayerRoles.Team.SCPs)
                 {
-                    ev.Player.UniqueRole = ev.Player.UniqueRole + "-SpawnAsCIS";
+                    ev.Player.UniqueRole = ev.Player.UniqueRole + "-SpawnAs CIS";
                 }
                 PluginAPI.Core.Log.Debug(ev.Player.UniqueRole);
-                Hint h = new();
-                h.Content = $"You have died, you will respawn in {TimeElapsed.ToString()} seconds.";
-                h.Duration = 1;
+                //Hint h = new();
+                //h.Content = $"You have died, you will respawn in {TimeElapsed.ToString()} seconds.";
+                //h.Duration = 1;
 
-                ev.Player.ShowHint(h);
+                //ev.Player.ShowHint(h);
             }
         }
 
@@ -69,9 +80,30 @@ namespace EarlyStart
                 if(TimeElapsed == 0)
                     break;
                 yield return Timing.WaitForSeconds(1f);
+                
                 TimeElapsed--;
                 PluginAPI.Core.Log.Debug(TimeElapsed.ToString());
-                
+                foreach (Exiled.API.Features.Player player in Exiled.API.Features.Player.List)
+                {
+                    try
+                    {
+                        if (player.IsAlive)
+                            continue;
+
+                        Hint h = new();
+                        h.Content = $"You have died, you will respawn in {TimeElapsed.ToString()} seconds.";
+                        h.Duration = 1.25f;
+
+                        player.ShowHint(h);
+                    }
+                    catch (Exception e)
+                    {
+                        PluginAPI.Core.Log.Error(e.ToString());
+                    }
+                }
+
+                if (Exiled.API.Features.Round.IsEnded)
+                    break;
             }
 
         }

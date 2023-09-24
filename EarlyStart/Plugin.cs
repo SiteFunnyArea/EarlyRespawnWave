@@ -48,6 +48,7 @@ namespace EarlyStart
             Exiled.Events.Handlers.Server.RoundEnded += _handlers.OnRoundEnded;
             Exiled.Events.Handlers.Player.Joined += _handlers.OnJoined;
             Exiled.Events.Handlers.Player.Dying += _handlers.OnDying;
+            Exiled.Events.Handlers.Player.ChangingRole += _handlers.OnChangingRole;
         }
 
         private void UnregisterEvents()
@@ -56,6 +57,7 @@ namespace EarlyStart
             Exiled.Events.Handlers.Server.RoundEnded -= _handlers.OnRoundEnded;
             Exiled.Events.Handlers.Player.Joined -= _handlers.OnJoined;
             Exiled.Events.Handlers.Player.Dying -= _handlers.OnDying;
+            Exiled.Events.Handlers.Player.ChangingRole += _handlers.OnChangingRole;
 
             _handlers = null;
         }
