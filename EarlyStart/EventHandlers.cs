@@ -29,7 +29,7 @@ namespace EarlyStart
 
         public void OnChangingRole(ChangingRoleEventArgs ev)
         {
-            if (ev.Player.UniqueRole.Contains("-SpawnAs"))
+            if (ev.Player.UniqueRole.Contains("-SpawnAs") && ev.NewRole != PlayerRoles.RoleTypeId.Spectator)
             {
                 ev.Player.UniqueRole = "";
             }
