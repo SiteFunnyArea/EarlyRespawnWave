@@ -28,7 +28,21 @@ namespace EarlyStart
 
                 foreach (Exiled.API.Features.Player p in Exiled.API.Features.Player.Get(PlayerRoles.RoleTypeId.Spectator)){
                     PluginAPI.Core.Log.Debug("user detected " + p.Nickname + " with info " + p.UniqueRole);
+                    if (p.UniqueRole.Contains("-SpawnAs"))
+                    {
+                        if (p.UniqueRole.Contains("RRT"))
+                        {
+                            p.RoleManager.ServerSetRole(PlayerRoles.RoleTypeId.NtfPrivate, PlayerRoles.RoleChangeReason.Respawn);
+                        }else if (p.UniqueRole.Contains("CIS"))
+                        {
+                            p.RoleManager.ServerSetRole(PlayerRoles.RoleTypeId.ChaosConscript, PlayerRoles.RoleChangeReason.Respawn);
 
+                        }else if (p.UniqueRole.Contains("None"))
+                        {
+                            p.RoleManager.ServerSetRole(PlayerRoles.RoleTypeId.Tutorial, PlayerRoles.RoleChangeReason.Respawn);
+
+                        }
+                    }
                  }
             });
         }
