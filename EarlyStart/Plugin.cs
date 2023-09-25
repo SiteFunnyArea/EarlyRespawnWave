@@ -26,6 +26,7 @@ namespace EarlyStart
             TimeOver = false;
 
             RegisterEvents();
+            
 
             base.OnEnabled();
         }

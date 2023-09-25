@@ -100,6 +100,8 @@ namespace EarlyStart
                     break;
                 if (Exiled.API.Features.Round.IsEnded)
                     break;
+                if (Plugin.Instance.TimeOver == true)
+                    break;
                 foreach (Exiled.API.Features.Player p in Exiled.API.Features.Player.Get(PlayerRoles.RoleTypeId.Spectator))
                 {
                     Exiled.API.Features.Broadcast b = new();
