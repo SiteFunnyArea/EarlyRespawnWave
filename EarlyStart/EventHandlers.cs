@@ -12,6 +12,7 @@ namespace EarlyStart
 
         public float TimeElapsed = Plugin.Instance.Config.Seconds;
         private static CoroutineHandle _timerCoroutine;
+        public int Waves;
 
         public void OnRoundStarted()
         {
@@ -21,8 +22,13 @@ namespace EarlyStart
             Timing.CallDelayed(Plugin.Instance.Config.Seconds, () =>
             {
                  Plugin.Instance.TimeOver = true;
-                 foreach(Exiled.API.Features.Player p in Exiled.API.Features.Player.Get(PlayerRoles.RoleTypeId.Spectator)){
+                PluginAPI.Core.Log.Debug(Plugin.Instance.TimeOver.ToString());
+                if (_timerCoroutine.IsRunning)
+                    Timing.KillCoroutines(_timerCoroutine);
+
+                foreach (Exiled.API.Features.Player p in Exiled.API.Features.Player.Get(PlayerRoles.RoleTypeId.Spectator)){
                     PluginAPI.Core.Log.Debug("user detected " + p.Nickname + " with info " + p.UniqueRole);
+
                  }
             });
         }
@@ -32,11 +38,21 @@ namespace EarlyStart
             if (ev.Player.UniqueRole.Contains("-SpawnAs") && ev.NewRole != PlayerRoles.RoleTypeId.Spectator)
             {
                 ev.Player.UniqueRole = "";
+                ev.Player.ClearBroadcasts();
             }
         }
 
         public void OnRoundEnded(RoundEndedEventArgs ev) {
             
+            Plugin.Instance.TimeOver = false;
+            TimeElapsed = Plugin.Instance.Config.Seconds;
+            if (_timerCoroutine.IsRunning)
+                Timing.KillCoroutines(_timerCoroutine);
+        }
+
+        public void OnRoundRestart()
+        {
+
             Plugin.Instance.TimeOver = false;
             TimeElapsed = Plugin.Instance.Config.Seconds;
             if (_timerCoroutine.IsRunning)
@@ -73,8 +89,6 @@ namespace EarlyStart
 
         public IEnumerator<float> TimerCoroutine()
         {
-            yield return Timing.WaitForSeconds(1f);
-
             while (true)
             {
                 if(TimeElapsed == 0)
@@ -86,7 +100,15 @@ namespace EarlyStart
                 TimeElapsed--;
                 PluginAPI.Core.Log.Debug(TimeElapsed.ToString());
 
-
+                foreach(Exiled.API.Features.Player p in Exiled.API.Features.Player.Get(PlayerRoles.RoleTypeId.Spectator))
+                {
+                    Exiled.API.Features.Broadcast b = new();
+                    b.Content = Plugin.Instance.Config.RespawnBroadcast.Content.Replace("{TimeElapsed}", TimeElapsed.ToString());
+                    b.Duration = Plugin.Instance.Config.RespawnBroadcast.Duration;
+                    b.Show = Plugin.Instance.Config.RespawnBroadcast.Show;
+                    b.Type = Plugin.Instance.Config.RespawnBroadcast.Type;
+                    p.Broadcast(b);
+                }    
                 
             }
 

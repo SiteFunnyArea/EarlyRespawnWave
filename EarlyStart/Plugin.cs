@@ -46,6 +46,7 @@ namespace EarlyStart
 
             Exiled.Events.Handlers.Server.RoundStarted += _handlers.OnRoundStarted;
             Exiled.Events.Handlers.Server.RoundEnded += _handlers.OnRoundEnded;
+            Exiled.Events.Handlers.Server.RestartingRound += _handlers.OnRoundRestart;
             Exiled.Events.Handlers.Player.Joined += _handlers.OnJoined;
             Exiled.Events.Handlers.Player.Dying += _handlers.OnDying;
             Exiled.Events.Handlers.Player.ChangingRole += _handlers.OnChangingRole;
@@ -55,6 +56,7 @@ namespace EarlyStart
         {
             Exiled.Events.Handlers.Server.RoundStarted -= _handlers.OnRoundStarted;
             Exiled.Events.Handlers.Server.RoundEnded -= _handlers.OnRoundEnded;
+            Exiled.Events.Handlers.Server.RestartingRound -= _handlers.OnRoundRestart;
             Exiled.Events.Handlers.Player.Joined -= _handlers.OnJoined;
             Exiled.Events.Handlers.Player.Dying -= _handlers.OnDying;
             Exiled.Events.Handlers.Player.ChangingRole += _handlers.OnChangingRole;
