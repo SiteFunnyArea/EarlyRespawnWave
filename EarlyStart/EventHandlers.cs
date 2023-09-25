@@ -40,7 +40,6 @@ namespace EarlyStart
                         }else if (p.UniqueRole.Contains("None"))
                         {
                             p.RoleManager.ServerSetRole(PlayerRoles.RoleTypeId.Tutorial, PlayerRoles.RoleChangeReason.Respawn);
-
                         }
                     }
                  }
@@ -49,19 +48,16 @@ namespace EarlyStart
 
         public void OnChangingRole(ChangingRoleEventArgs ev)
         {
+
             if (ev.Player.UniqueRole.Contains("-SpawnAs") && ev.NewRole != PlayerRoles.RoleTypeId.Spectator)
             {
                 ev.Player.UniqueRole = "";
                 ev.Player.ClearBroadcasts();
             }
-        }
-
-        public void OnRoundEnded(RoundEndedEventArgs ev) {
-            
-            Plugin.Instance.TimeOver = false;
-            TimeElapsed = Plugin.Instance.Config.Seconds;
-            if (_timerCoroutine.IsRunning)
-                Timing.KillCoroutines(_timerCoroutine);
+            else if (Plugin.Instance.TimeOver == false && ev.NewRole == PlayerRoles.RoleTypeId.Spectator)
+            {
+                ev.Player.UniqueRole = ev.Player.UniqueRole + "-SpawnAs None";
+            }
         }
 
         public void OnRoundRestart()
@@ -93,11 +89,6 @@ namespace EarlyStart
                     ev.Player.UniqueRole = ev.Player.UniqueRole + "-SpawnAs CIS";
                 }
                 PluginAPI.Core.Log.Debug(ev.Player.UniqueRole);
-                Hint h = new();
-                h.Content = $"You have died, you will respawn in less than {TimeElapsed.ToString()} seconds.";
-                h.Duration = 1;
-
-                ev.Player.ShowHint(h);
             }
         }
 
@@ -109,12 +100,7 @@ namespace EarlyStart
                     break;
                 if (Exiled.API.Features.Round.IsEnded)
                     break;
-                yield return Timing.WaitForSeconds(1f);
-                
-                TimeElapsed--;
-                PluginAPI.Core.Log.Debug(TimeElapsed.ToString());
-
-                foreach(Exiled.API.Features.Player p in Exiled.API.Features.Player.Get(PlayerRoles.RoleTypeId.Spectator))
+                foreach (Exiled.API.Features.Player p in Exiled.API.Features.Player.Get(PlayerRoles.RoleTypeId.Spectator))
                 {
                     Exiled.API.Features.Broadcast b = new();
                     b.Content = Plugin.Instance.Config.RespawnBroadcast.Content.Replace("{TimeElapsed}", TimeElapsed.ToString());
@@ -122,8 +108,10 @@ namespace EarlyStart
                     b.Show = Plugin.Instance.Config.RespawnBroadcast.Show;
                     b.Type = Plugin.Instance.Config.RespawnBroadcast.Type;
                     p.Broadcast(b);
-                }    
+                }
+                yield return Timing.WaitForSeconds(1f);
                 
+                TimeElapsed--;
             }
 
         }
