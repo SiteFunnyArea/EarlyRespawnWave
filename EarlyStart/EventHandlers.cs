@@ -63,11 +63,11 @@ namespace EarlyStart
                     ev.Player.UniqueRole = ev.Player.UniqueRole + "-SpawnAs CIS";
                 }
                 PluginAPI.Core.Log.Debug(ev.Player.UniqueRole);
-                //Hint h = new();
-                //h.Content = $"You have died, you will respawn in {TimeElapsed.ToString()} seconds.";
-                //h.Duration = 1;
+                Hint h = new();
+                h.Content = $"You have died, you will respawn in less than {TimeElapsed.ToString()} seconds.";
+                h.Duration = 1;
 
-                //ev.Player.ShowHint(h);
+                ev.Player.ShowHint(h);
             }
         }
 
@@ -79,31 +79,15 @@ namespace EarlyStart
             {
                 if(TimeElapsed == 0)
                     break;
+                if (Exiled.API.Features.Round.IsEnded)
+                    break;
                 yield return Timing.WaitForSeconds(1f);
                 
                 TimeElapsed--;
                 PluginAPI.Core.Log.Debug(TimeElapsed.ToString());
-                foreach (Exiled.API.Features.Player player in Exiled.API.Features.Player.List)
-                {
-                    try
-                    {
-                        if (player.IsAlive)
-                            continue;
 
-                        Hint h = new();
-                        h.Content = $"You have died, you will respawn in {TimeElapsed.ToString()} seconds.";
-                        h.Duration = 1.25f;
 
-                        player.ShowHint(h);
-                    }
-                    catch (Exception e)
-                    {
-                        PluginAPI.Core.Log.Error(e.ToString());
-                    }
-                }
-
-                if (Exiled.API.Features.Round.IsEnded)
-                    break;
+                
             }
 
         }
