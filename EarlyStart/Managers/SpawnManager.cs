@@ -19,17 +19,15 @@ namespace EarlyStart.Managers
         {
             // Set players role
             player.RoleManager.ServerSetRole(role.Role, RoleChangeReason.None);
-            
             player.ClearInventory();
-
             // Adds player inventory
-            if(role.Inventory.Count > 0 ) {
+            if (role.Inventory.Count > 0)
+            {
                 foreach (ItemType it in role.Inventory)
                 {
                     player.AddItem(it);
                 }
             }
-
             // Adds players ammo
             if (role.Ammo.Count() > 0)
             {
@@ -50,24 +48,27 @@ namespace EarlyStart.Managers
                 }
             }
 
-            if(role.Effects.Count > 0)
+            if (role.Effects.Count > 0)
             {
-                foreach(Effect e in role.Effects)
+                foreach (Effect e in role.Effects)
                 {
                     player.EnableEffect(e);
                 }
             }
+
             // Sets players health and max health
             player.MaxHealth = role.MaxHealth;
             player.Health = role.Health;
 
-            // Sets players postition
-            player.Transform.position = role.SpawnLocation;
             // Sets players Custom Info.
             player.CustomInfo = role.CustomInfo;
             player.UniqueRole = role.Name + "-" + role.Team.ToString();
 
             player.Broadcast(role.Broadcast);
+
+            // Sets players postition
+            player.Transform.position = role.SpawnLocation;
+
         }
     }
 }

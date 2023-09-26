@@ -20,12 +20,12 @@ namespace EarlyStart.Roles
         public override float MaxHealth { get; set; } = 100;
         public override Exiled.API.Features.Broadcast Broadcast { get; set; } = new()
         {
-            Content = "You have spawned as <color=#ff393f>Rapid Response Team</color> from early spawn.<br>Your objective is to terminate <color=#bd0606>SCPs</color> and <color=#0e9017>Chaos Insurgency</color> to secure the site.<br>Also escorting any <color=#f7e808>Science Personnel</color> and complying <color=#ffa300>Class D Personnel</color> to safety.",
+            Content = "<size=25><b>You have spawned as</b></size> <size=25><color=#0e9017><b>Infiltration Insurgency Squad</b></color></size> <size=15><b>from early spawn</b></size>.<br><size=15>Your objective is to terminate any </size><size=15><color=#f7e808>Science Personnel</color></size> <size=15>and</size> <size=15><color=#949a91>Facility Guards</color></size>.<br><size=15>Save any </size><size=15><color=#ffa300>Class D Personnel</color></size> <size=15>to safety. Terminating </size><size=15><color=#bd0606>SCPs</color></size> <size=15>is a last resort.</size>",
             Duration = 10,
             Show = true,
             Type = global::Broadcast.BroadcastFlags.Normal,
         };
-        public override string CustomInfo { get; set; } = "<color=#e50000>Rapid Response Team</color>";
+        public override string CustomInfo { get; set; } = "<color=#960018>Rapid Response Team</color>";
         public override List<ItemType> Inventory { get; set; } = new()
         {
             ItemType.GunCrossvec,
@@ -35,7 +35,6 @@ namespace EarlyStart.Roles
             ItemType.Medkit,
             ItemType.GrenadeFlash
         };
-        public override List<uint> CustomItemInventory { get; set; }
         public override Dictionary<AmmoType, ushort> Ammo { get; set; } = new()
         {
             {

@@ -17,7 +17,6 @@ namespace EarlyStart
 
         public int IISSpawn;
         public int RRTSpawn;
-        public int TutSpawn;
         public string PreferredAnnounement = "";
         public string Subtitles = "";
 
@@ -28,7 +27,7 @@ namespace EarlyStart
             _timerCoroutine = Timing.RunCoroutine(TimerCoroutine());
             Timing.CallDelayed(Plugin.Instance.Config.Seconds, () =>
             {
-                 Plugin.Instance.TimeOver = true;
+                Plugin.Instance.TimeOver = true;
                 PluginAPI.Core.Log.Debug(Plugin.Instance.TimeOver.ToString());
                 if (_timerCoroutine.IsRunning)
                     Timing.KillCoroutines(_timerCoroutine);
@@ -65,11 +64,11 @@ namespace EarlyStart
                     PreferredAnnounement = Plugin.Instance.Config.CassieAnnouncements.BothCassie;
                     Subtitles = "Attention, all personnel: Rapid Response Team has entered the Facility. Chaos Insurgency threat has also been detected, leave the facility with caution.";
                 }
-                if(RRTSpawn > 0 && IISSpawn <= 0) {
+                else if(RRTSpawn > 0 && IISSpawn <= 0) {
                     PreferredAnnounement = Plugin.Instance.Config.CassieAnnouncements.RRTOnlyCassie;
                     Subtitles = "Attention, all personnel: Rapid Response Team has entered the Facility. They will escort Foundation personnel out shortly.";
                 }
-                if (IISSpawn > 0 && RRTSpawn <= 0)
+                else if (IISSpawn > 0 && RRTSpawn <= 0)
                 {
                     PreferredAnnounement = Plugin.Instance.Config.CassieAnnouncements.IISOnlyCassie;
                     Subtitles = "Attention, all personnel: Chaos Insurgency has been detected on Surface Zone. Please head to a nearby evacuation zone nearest to you.";
@@ -87,10 +86,6 @@ namespace EarlyStart
                 ev.Player.UniqueRole = "";
                 ev.Player.ClearBroadcasts();
             }
-            else if (Plugin.Instance.TimeOver == false && ev.NewRole == PlayerRoles.RoleTypeId.Spectator)
-            {
-                ev.Player.UniqueRole = ev.Player.UniqueRole + "-SpawnAs None";
-            }
         }
 
         public void OnRoundRestart()
@@ -100,7 +95,6 @@ namespace EarlyStart
             TimeElapsed = Plugin.Instance.Config.Seconds;
             IISSpawn = 0;
             RRTSpawn = 0;
-            TutSpawn = 0;
             PreferredAnnounement = "";
             Subtitles = "";
             if (_timerCoroutine.IsRunning)
