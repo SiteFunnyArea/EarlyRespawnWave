@@ -1,4 +1,5 @@
 ﻿using Exiled.API.Features;
+using Exiled.API.Features.Items;
 using Exiled.Events.EventArgs.Player;
 using Exiled.Events.EventArgs.Server;
 using Exiled.Events.Handlers;
@@ -13,6 +14,12 @@ namespace EarlyStart
         public float TimeElapsed = Plugin.Instance.Config.Seconds;
         private static CoroutineHandle _timerCoroutine;
         public int Waves;
+
+        public int IISSpawn;
+        public int RRTSpawn;
+        public int TutSpawn;
+        public string PreferredAnnounement = "";
+        public string Subtitles = "";
 
         public void OnRoundStarted()
         {
@@ -32,17 +39,43 @@ namespace EarlyStart
                     {
                         if (p.UniqueRole.Contains("RRT"))
                         {
-                            p.RoleManager.ServerSetRole(PlayerRoles.RoleTypeId.NtfPrivate, PlayerRoles.RoleChangeReason.Respawn);
-                        }else if (p.UniqueRole.Contains("CIS"))
+                            Plugin.Instance.sM.SpawnClass(Plugin.Instance.Config.RapidResponseTeam, p);
+                            RRTSpawn+= 1;
+                        }else if (p.UniqueRole.Contains("IIS"))
                         {
-                            p.RoleManager.ServerSetRole(PlayerRoles.RoleTypeId.ChaosConscript, PlayerRoles.RoleChangeReason.Respawn);
+                            Plugin.Instance.sM.SpawnClass(Plugin.Instance.Config.InfiltrationInsurgencySquad, p);
+                            IISSpawn += 1;
 
                         }else if (p.UniqueRole.Contains("None"))
                         {
-                            p.RoleManager.ServerSetRole(PlayerRoles.RoleTypeId.Tutorial, PlayerRoles.RoleChangeReason.Respawn);
+                            int chance = UnityEngine.Random.Range(0, 100);
+                            if(chance <= 50) {
+                                Plugin.Instance.sM.SpawnClass(Plugin.Instance.Config.RapidResponseTeam, p);
+                                RRTSpawn += 1;
+                            } else
+                            {
+                                Plugin.Instance.sM.SpawnClass(Plugin.Instance.Config.InfiltrationInsurgencySquad, p);
+                                IISSpawn += 1;
+                            }
                         }
                     }
                  }
+
+                if(IISSpawn > 0 && RRTSpawn > 0) {
+                    PreferredAnnounement = Plugin.Instance.Config.CassieAnnouncements.BothCassie;
+                    Subtitles = "Attention, all personnel: Rapid Response Team has entered the Facility. Chaos Insurgency threat has also been detected, leave the facility with caution.";
+                }
+                if(RRTSpawn > 0 && IISSpawn <= 0) {
+                    PreferredAnnounement = Plugin.Instance.Config.CassieAnnouncements.RRTOnlyCassie;
+                    Subtitles = "Attention, all personnel: Rapid Response Team has entered the Facility. They will escort Foundation personnel out shortly.";
+                }
+                if (IISSpawn > 0 && RRTSpawn <= 0)
+                {
+                    PreferredAnnounement = Plugin.Instance.Config.CassieAnnouncements.IISOnlyCassie;
+                    Subtitles = "Attention, all personnel: Chaos Insurgency has been detected on Surface Zone. Please head to a nearby evacuation zone nearest to you.";
+                }
+
+                Exiled.API.Features.Cassie.MessageTranslated(PreferredAnnounement, Subtitles,false,true,true);
             });
         }
 
@@ -65,6 +98,11 @@ namespace EarlyStart
 
             Plugin.Instance.TimeOver = false;
             TimeElapsed = Plugin.Instance.Config.Seconds;
+            IISSpawn = 0;
+            RRTSpawn = 0;
+            TutSpawn = 0;
+            PreferredAnnounement = "";
+            Subtitles = "";
             if (_timerCoroutine.IsRunning)
                 Timing.KillCoroutines(_timerCoroutine);
         }
@@ -86,7 +124,7 @@ namespace EarlyStart
                     ev.Player.UniqueRole = ev.Player.UniqueRole + "-SpawnAs RRT";
                 }else if (ev.Player.Role.Team == PlayerRoles.Team.ClassD || ev.Player.Role.Team == PlayerRoles.Team.SCPs)
                 {
-                    ev.Player.UniqueRole = ev.Player.UniqueRole + "-SpawnAs CIS";
+                    ev.Player.UniqueRole = ev.Player.UniqueRole + "-SpawnAs IIS";
                 }
                 PluginAPI.Core.Log.Debug(ev.Player.UniqueRole);
             }

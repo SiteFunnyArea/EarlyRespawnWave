@@ -1,4 +1,6 @@
-﻿using Exiled.API.Interfaces;
+﻿using EarlyStart.Configurations;
+using EarlyStart.Roles;
+using Exiled.API.Interfaces;
 using System.ComponentModel;
 
 namespace EarlyStart
@@ -19,5 +21,11 @@ namespace EarlyStart
             Show = true,
             Type = global::Broadcast.BroadcastFlags.Normal,
         };
+        [Description("the CASSIE messages that will play depending on the scenario")]
+        public CassieAnnouncements CassieAnnouncements { get; set; } = new();
+        [Description("The RapidResponseTeam role")]
+        public RapidResponseTeam RapidResponseTeam { get; set; } = new();
+        [Description("The InfiltrationInsurgencySquad role")]
+        public InfiltrationInsurgencySquad InfiltrationInsurgencySquad { get; set; } = new();
     }
 }

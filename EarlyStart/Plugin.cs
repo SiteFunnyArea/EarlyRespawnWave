@@ -1,4 +1,6 @@
-﻿using Exiled.API.Features;
+﻿using EarlyStart.Managers;
+using EarlyStart.Roles;
+using Exiled.API.Features;
 
 namespace EarlyStart
 {
@@ -20,10 +22,13 @@ namespace EarlyStart
 
         public bool TimeOver;
 
+        public SpawnManager sM;
+
         public override void OnEnabled()
         {
             Instance = this;
             TimeOver = false;
+            sM = new SpawnManager();
 
             RegisterEvents();
             
@@ -37,6 +42,7 @@ namespace EarlyStart
 
             Instance = null;
             TimeOver = false;
+            sM = null;
 
             base.OnDisabled();
         }
