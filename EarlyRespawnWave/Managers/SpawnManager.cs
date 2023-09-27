@@ -1,4 +1,4 @@
-﻿using EarlyStart.Interfaces;
+﻿using EarlyRespawnWave.Interfaces;
 using Exiled.API.Enums;
 using Exiled.API.Features;
 using Exiled.API.Features.Roles;
@@ -11,7 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EarlyStart.Managers
+namespace EarlyRespawnWave.Managers
 {
     public class SpawnManager
     {

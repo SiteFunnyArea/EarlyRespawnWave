@@ -1,14 +1,14 @@
-﻿using EarlyStart.Managers;
-using EarlyStart.Roles;
+﻿using EarlyRespawnWave.Managers;
+using EarlyRespawnWave.Roles;
 using Exiled.API.Features;
 
-namespace EarlyStart
+namespace EarlyRespawnWave
 {
     public sealed class Plugin : Plugin<Config>
     {
         public override string Author => "SiteFunnyArea";
 
-        public override string Name => "EarlyStart";
+        public override string Name => "EarlyRespawnWave";
 
         public override string Prefix => Name;
 

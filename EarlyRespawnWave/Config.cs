@@ -1,9 +1,9 @@
-﻿using EarlyStart.Configurations;
-using EarlyStart.Roles;
+﻿using EarlyRespawnWave.Configurations;
+using EarlyRespawnWave.Roles;
 using Exiled.API.Interfaces;
 using System.ComponentModel;
 
-namespace EarlyStart
+namespace EarlyRespawnWave
 {
     public class Config : IConfig
     {

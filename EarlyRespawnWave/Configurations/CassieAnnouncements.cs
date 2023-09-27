@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EarlyStart.Configurations
+namespace EarlyRespawnWave.Configurations
 {
     public class CassieAnnouncements
     {

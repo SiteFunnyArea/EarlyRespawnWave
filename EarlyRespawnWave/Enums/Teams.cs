@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EarlyStart.Enums;
+namespace EarlyRespawnWave.Enums;
 
 public enum Teams
 {

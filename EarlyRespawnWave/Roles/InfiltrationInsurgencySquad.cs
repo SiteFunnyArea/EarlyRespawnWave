@@ -1,5 +1,5 @@
-﻿using EarlyStart.Enums;
-using EarlyStart.Interfaces;
+﻿using EarlyRespawnWave.Enums;
+using EarlyRespawnWave.Interfaces;
 using Exiled.API.Enums;
 using PlayerRoles;
 using System;
@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace EarlyStart.Roles
+namespace EarlyRespawnWave.Roles
 {
     public class InfiltrationInsurgencySquad : ICustomRole
     {

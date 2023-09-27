@@ -6,7 +6,7 @@ using Exiled.Events.Handlers;
 using MEC;
 using PluginAPI.Core;
 
-namespace EarlyStart
+namespace EarlyRespawnWave
 {
     public class EventHandlers
     {

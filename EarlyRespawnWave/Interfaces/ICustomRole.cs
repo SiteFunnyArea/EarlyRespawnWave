@@ -1,4 +1,4 @@
-﻿using EarlyStart.Enums;
+﻿using EarlyRespawnWave.Enums;
 using Exiled.API.Enums;
 using Exiled.API.Features;
 using PlayerRoles;
@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using YamlDotNet.Serialization;
 
-namespace EarlyStart.Interfaces
+namespace EarlyRespawnWave.Interfaces
 {
     public abstract class ICustomRole
     {
