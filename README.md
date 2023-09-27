@@ -1,2 +1,2 @@
-# EarlyStart
-EarlyStart gives people who die early a second chance at life. 
+# EarlyRespawnWave
+EarlyRespawnWave gives people who die early a second chance at life. 
