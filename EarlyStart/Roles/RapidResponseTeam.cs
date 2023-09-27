@@ -20,7 +20,7 @@ namespace EarlyStart.Roles
         public override float MaxHealth { get; set; } = 100;
         public override Exiled.API.Features.Broadcast Broadcast { get; set; } = new()
         {
-            Content = "<size=25><b>You have spawned as</b></size> <size=25><color=#0e9017><b>Infiltration Insurgency Squad</b></color></size> <size=15><b>from early spawn</b></size>.<br><size=15>Your objective is to terminate any </size><size=15><color=#f7e808>Science Personnel</color></size> <size=15>and</size> <size=15><color=#949a91>Facility Guards</color></size>.<br><size=15>Save any </size><size=15><color=#ffa300>Class D Personnel</color></size> <size=15>to safety. Terminating </size><size=15><color=#bd0606>SCPs</color></size> <size=15>is a last resort.</size>",
+            Content = "You have spawned as <color=#ff393f>Rapid Response Team</color> from early spawn.<br>Your objective is to terminate <color=#bd0606>SCPs</color> and <color=#0e9017>CI</color> to secure the site.<br>Also escorting any <color=#f7e808>Scientists</color> and complying <color=#ffa300>Class D</color> to safety.",
             Duration = 10,
             Show = true,
             Type = global::Broadcast.BroadcastFlags.Normal,

@@ -33,7 +33,7 @@ namespace EarlyStart.Managers
             {
                 foreach (KeyValuePair<AmmoType, ushort> Ammo in role.Ammo)
                 {
-                    player.AddAmmo(Ammo.Key, Ammo.Value);
+                    player.SetAmmo(Ammo.Key, Ammo.Value);
                 }
             }
             // Gives custom items
