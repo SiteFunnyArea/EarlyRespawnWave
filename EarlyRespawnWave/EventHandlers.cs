@@ -1,4 +1,5 @@
-﻿using Exiled.API.Features;
+﻿using EarlyRespawnWave.Managers;
+using Exiled.API.Features;
 using Exiled.API.Features.Items;
 using Exiled.Events.EventArgs.Player;
 using Exiled.Events.EventArgs.Server;
@@ -19,41 +20,41 @@ namespace EarlyRespawnWave
         public int RRTSpawn;
         public string PreferredAnnounement = "";
         public string Subtitles = "";
+        SpawnManager spawn;
 
         public void OnRoundStarted()
         {
-
-            PluginAPI.Core.Log.Debug($"{Plugin.Instance.Name} Round started.");
+            SpawnManager spawn = Plugin.Instance.sM;
             _timerCoroutine = Timing.RunCoroutine(TimerCoroutine());
             Timing.CallDelayed(Plugin.Instance.Config.Seconds, () =>
             {
                 Plugin.Instance.TimeOver = true;
-                PluginAPI.Core.Log.Debug(Plugin.Instance.TimeOver.ToString());
                 if (_timerCoroutine.IsRunning)
                     Timing.KillCoroutines(_timerCoroutine);
 
                 foreach (Exiled.API.Features.Player p in Exiled.API.Features.Player.Get(PlayerRoles.RoleTypeId.Spectator)){
-                    PluginAPI.Core.Log.Debug("user detected " + p.Nickname + " with info " + p.UniqueRole);
+
+                    //PluginAPI.Core.Log.Debug("user detected " + p.Nickname + " with info " + p.UniqueRole);
                     if (p.UniqueRole.Contains("-SpawnAs"))
                     {
                         if (p.UniqueRole.Contains("RRT"))
                         {
-                            Plugin.Instance.sM.SpawnClass(Plugin.Instance.Config.RapidResponseTeam, p);
+                            spawn.SpawnClass(Plugin.Instance.Config.RapidResponseTeam, p);
                             RRTSpawn+= 1;
                         }else if (p.UniqueRole.Contains("IIS"))
                         {
-                            Plugin.Instance.sM.SpawnClass(Plugin.Instance.Config.InfiltrationInsurgencySquad, p);
+                            spawn.SpawnClass(Plugin.Instance.Config.InfiltrationInsurgencySquad, p);
                             IISSpawn += 1;
 
                         }else if (p.UniqueRole.Contains("None"))
                         {
                             int chance = UnityEngine.Random.Range(0, 100);
                             if(chance <= 50) {
-                                Plugin.Instance.sM.SpawnClass(Plugin.Instance.Config.RapidResponseTeam, p);
+                                spawn.SpawnClass(Plugin.Instance.Config.InfiltrationInsurgencySquad, p);
                                 RRTSpawn += 1;
                             } else
                             {
-                                Plugin.Instance.sM.SpawnClass(Plugin.Instance.Config.InfiltrationInsurgencySquad, p);
+                                spawn.SpawnClass(Plugin.Instance.Config.RapidResponseTeam, p);
                                 IISSpawn += 1;
                             }
                         }
@@ -74,7 +75,9 @@ namespace EarlyRespawnWave
                     Subtitles = "Attention, all personnel: Chaos Insurgency has been detected on Surface Zone. Please head to a nearby evacuation zone nearest to you.";
                 }
 
-                Exiled.API.Features.Cassie.MessageTranslated(PreferredAnnounement, Subtitles,false,true,true);
+                if (PreferredAnnounement.Count() > 0)
+                    Exiled.API.Features.Cassie.MessageTranslated(PreferredAnnounement, Subtitles, false, true, true);
+                
             });
         }
 
