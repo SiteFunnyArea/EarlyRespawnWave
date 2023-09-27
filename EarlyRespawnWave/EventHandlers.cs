@@ -112,6 +112,7 @@ namespace EarlyRespawnWave
                             ICustomRole? i = SHQueue[0];
                             if(i != null)
                             {
+                                PluginAPI.Core.Log.Debug(i.Name);
                                 spawn.SpawnClass(i, p);
                                 SHQueue.Remove(i);
                             }
