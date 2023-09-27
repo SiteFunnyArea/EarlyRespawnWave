@@ -43,7 +43,7 @@ namespace EarlyRespawnWave.Managers
                 {
                     if (!player.IsInventoryFull)
                     {
-                        CustomItem.Get(ItemId).Give(player);
+                        CustomItem.TryGive(player, ItemId);
                     }
                 }
             }
@@ -59,16 +59,74 @@ namespace EarlyRespawnWave.Managers
             // Sets players health and max health
             player.MaxHealth = role.MaxHealth;
             player.Health = role.Health;
+            player.IsGodModeEnabled = role.IsGodMode;
 
             // Sets players Custom Info.
             player.CustomInfo = role.CustomInfo;
             player.UniqueRole = role.Name + "-" + role.Team.ToString();
+            if(role.Abilities.Count > 0)
+            {
+                foreach(IAbility i in role.Abilities)
+                {
+                    if(i.Enabled == true)
+                    {
+                        i.AbilityAdded(player);
+                        i.SubscribeToEvents();
+                    }
+                }
+            }
 
             player.Broadcast(role.Broadcast);
 
             // Sets players postition
             player.Transform.position = role.SpawnLocation;
 
+        }
+
+        public void RemoveRole(Player p)
+        {
+            ICustomRole? role = CheckPlayerForRole(p);
+            if(role != null)
+            {
+                p.UniqueRole = "";
+                p.CustomInfo = "";
+                if(role.Abilities.Count > 0)
+                {
+                    foreach(IAbility i in role.Abilities)
+                    {
+                        if(i.Enabled == true)
+                        {
+                            i.AbilityRemoved(p);
+                            i.UnsubscribeToEvents();
+                        }
+                    }
+                }
+            }
+        }
+
+        public ICustomRole? CheckPlayerForRole(Player p)
+        {
+            if(p.UniqueRole.Contains("Rapid Response Team")){
+                return Plugin.Instance.Config.RapidResponseTeam;
+            }
+            if (p.UniqueRole.Contains("Infiltration Insurgency Squad"))
+            {
+                return Plugin.Instance.Config.InfiltrationInsurgencySquad;
+            }
+
+            return null;
+        }
+
+        public bool PlayerHasACustomRole(Player p)
+        {
+            if(CheckPlayerForRole(p) != null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

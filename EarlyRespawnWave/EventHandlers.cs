@@ -1,4 +1,5 @@
-﻿using EarlyRespawnWave.Managers;
+﻿using EarlyRespawnWave.Interfaces;
+using EarlyRespawnWave.Managers;
 using Exiled.API.Features;
 using Exiled.API.Features.Items;
 using Exiled.Events.EventArgs.Player;
@@ -6,6 +7,7 @@ using Exiled.Events.EventArgs.Server;
 using Exiled.Events.Handlers;
 using MEC;
 using PluginAPI.Core;
+using Utils.NonAllocLINQ;
 
 namespace EarlyRespawnWave
 {
@@ -20,11 +22,14 @@ namespace EarlyRespawnWave
         public int RRTSpawn;
         public string PreferredAnnounement = "";
         public string Subtitles = "";
+        public List<ICustomRole> SHQueue;
         SpawnManager spawn;
 
         public void OnRoundStarted()
         {
+            SHQueue = new List<ICustomRole>();
             SpawnManager spawn = Plugin.Instance.sM;
+            Waves += 1;
             _timerCoroutine = Timing.RunCoroutine(TimerCoroutine());
             Timing.CallDelayed(Plugin.Instance.Config.Seconds, () =>
             {
@@ -62,17 +67,17 @@ namespace EarlyRespawnWave
                  }
 
                 if(IISSpawn > 0 && RRTSpawn > 0) {
-                    PreferredAnnounement = Plugin.Instance.Config.CassieAnnouncements.BothCassie;
-                    Subtitles = "Attention, all personnel: Rapid Response Team has entered the Facility. Chaos Insurgency threat has also been detected, leave the facility with caution.";
+                    PreferredAnnounement = Plugin.Instance.Config.CassieAnnouncements.BothCassie.CassieAnnouncement;
+                    Subtitles = Plugin.Instance.Config.CassieAnnouncements.BothCassie.CassieSubtitle;
                 }
                 else if(RRTSpawn > 0 && IISSpawn <= 0) {
-                    PreferredAnnounement = Plugin.Instance.Config.CassieAnnouncements.RRTOnlyCassie;
-                    Subtitles = "Attention, all personnel: Rapid Response Team has entered the Facility. They will escort Foundation personnel out shortly.";
+                    PreferredAnnounement = Plugin.Instance.Config.CassieAnnouncements.RRTOnlyCassie.CassieAnnouncement;
+                    Subtitles = Plugin.Instance.Config.CassieAnnouncements.RRTOnlyCassie.CassieSubtitle;
                 }
                 else if (IISSpawn > 0 && RRTSpawn <= 0)
                 {
-                    PreferredAnnounement = Plugin.Instance.Config.CassieAnnouncements.IISOnlyCassie;
-                    Subtitles = "Attention, all personnel: Chaos Insurgency has been detected on Surface Zone. Please head to a nearby evacuation zone nearest to you.";
+                    PreferredAnnounement = Plugin.Instance.Config.CassieAnnouncements.IISOnlyCassie.CassieAnnouncement;
+                    Subtitles = Plugin.Instance.Config.CassieAnnouncements.IISOnlyCassie.CassieSubtitle;
                 }
 
                 if (PreferredAnnounement.Count() > 0)
@@ -80,7 +85,45 @@ namespace EarlyRespawnWave
                 
             });
         }
+        
+        public void OnRespawningTeam(RespawningTeamEventArgs ev)
+        {
+            if(Waves < 2)
+            {
+                Plugin.Instance.TimeOver = false;
+                Waves += 1;
+                TimeElapsed = Plugin.Instance.Config.Seconds;
+                _timerCoroutine = Timing.RunCoroutine(TimerCoroutine());
+                Timing.CallDelayed(Plugin.Instance.Config.Seconds, () => {
+                    Plugin.Instance.TimeOver = true;
+                    if (_timerCoroutine.IsRunning)
+                        Timing.KillCoroutines(_timerCoroutine);
+                    SHQueue.Add(Plugin.Instance.Config.SerpentsHand.SHLeader);
+                    SHQueue.Add(Plugin.Instance.Config.SerpentsHand.SHSilencer);
+                    SHQueue.Add(Plugin.Instance.Config.SerpentsHand.SHEngineer);
+                    SHQueue.Add(Plugin.Instance.Config.SerpentsHand.SHPhantom);
+                    SHQueue.Add(Plugin.Instance.Config.SerpentsHand.SHSavage);
+                    SHQueue.Add(Plugin.Instance.Config.SerpentsHand.SHCollector);
+                    SHQueue.Add(Plugin.Instance.Config.SerpentsHand.SHDestroyer);
+                    
 
+                        foreach (Exiled.API.Features.Player p in Exiled.API.Features.Player.Get(PlayerRoles.RoleTypeId.Spectator))
+                        {
+                            ICustomRole? i = SHQueue[0];
+                            if(i != null)
+                            {
+                                spawn.SpawnClass(i, p);
+                                SHQueue.Remove(i);
+                            }
+                        }
+                    
+                    if(SHQueue.Count > 0)
+                    {
+                        SHQueue.Clear();
+                    }
+                });
+            }
+        }
         public void OnChangingRole(ChangingRoleEventArgs ev)
         {
 
@@ -89,6 +132,7 @@ namespace EarlyRespawnWave
                 ev.Player.UniqueRole = "";
                 ev.Player.ClearBroadcasts();
             }
+
         }
 
         public void OnRoundRestart()
@@ -98,6 +142,7 @@ namespace EarlyRespawnWave
             TimeElapsed = Plugin.Instance.Config.Seconds;
             IISSpawn = 0;
             RRTSpawn = 0;
+            SHQueue = null;
             PreferredAnnounement = "";
             Subtitles = "";
             if (_timerCoroutine.IsRunning)
@@ -123,14 +168,22 @@ namespace EarlyRespawnWave
                 {
                     ev.Player.UniqueRole = ev.Player.UniqueRole + "-SpawnAs IIS";
                 }
-                PluginAPI.Core.Log.Debug(ev.Player.UniqueRole);
             }
+
+            //if (spawn.CheckPlayerForRole(ev.Player) != null)
+            //{
+            //    ev.Player.UniqueRole = "";
+            //    ev.Player.CustomInfo = "";
+            //    spawn.RemoveRole(ev.Player);
+            //}
         }
 
         public IEnumerator<float> TimerCoroutine()
         {
             while (true)
             {
+                if (Waves > 2)
+                    break;
                 if(TimeElapsed == 0)
                     break;
                 if (Exiled.API.Features.Round.IsEnded)
@@ -139,8 +192,12 @@ namespace EarlyRespawnWave
                     break;
                 foreach (Exiled.API.Features.Player p in Exiled.API.Features.Player.Get(PlayerRoles.RoleTypeId.Spectator))
                 {
+                    string Prefix = "";
+                    if (Waves == 1) Prefix = "<color=#076312>F</color><color=#076319>i</color><color=#076320>r</color><color=#076327>s</color><color=#07632E>t</color>";
+                    if (Waves == 2) Prefix = "<color=#076312>S</color><color=#076316>e</color><color=#07631A>c</color><color=#07631E>o</color><color=#076322>n</color><color=#076326>d</color>";
+
                     Exiled.API.Features.Broadcast b = new();
-                    b.Content = Plugin.Instance.Config.RespawnBroadcast.Content.Replace("{TimeElapsed}", TimeElapsed.ToString());
+                    b.Content = Plugin.Instance.Config.RespawnBroadcast.Content.Replace("{TimeElapsed}", (TimeElapsed-2).ToString()).Replace("{SpawnWave}", Prefix);
                     b.Duration = Plugin.Instance.Config.RespawnBroadcast.Duration;
                     b.Show = Plugin.Instance.Config.RespawnBroadcast.Show;
                     b.Type = Plugin.Instance.Config.RespawnBroadcast.Type;

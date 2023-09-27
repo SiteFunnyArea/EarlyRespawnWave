@@ -1,4 +1,5 @@
-﻿using EarlyRespawnWave.Enums;
+﻿using EarlyRespawnWave.Abilities;
+using EarlyRespawnWave.Enums;
 using EarlyRespawnWave.Interfaces;
 using Exiled.API.Enums;
 using PlayerRoles;
@@ -42,6 +43,12 @@ namespace EarlyRespawnWave.Roles
                 50
             }
         };
+
+        public override List<IAbility> Abilities { get; set; } = new()
+        {
+            new TestAbility()
+        };
+
         public override Vector3 SpawnLocation { get; set; } = new(123.751f, 988.762f, 21.153f);
     }
 }

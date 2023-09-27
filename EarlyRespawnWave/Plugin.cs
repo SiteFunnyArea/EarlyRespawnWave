@@ -14,7 +14,7 @@ namespace EarlyRespawnWave
 
         public override Version RequiredExiledVersion => new Version(8,0,0);
 
-        public override Version Version => new Version(1,0,0);
+        public override Version Version => new Version(1,1,0);
 
         public static Plugin Instance;
 
@@ -53,6 +53,7 @@ namespace EarlyRespawnWave
 
             Exiled.Events.Handlers.Server.RoundStarted += _handlers.OnRoundStarted;
             Exiled.Events.Handlers.Server.RestartingRound += _handlers.OnRoundRestart;
+            Exiled.Events.Handlers.Server.RespawningTeam += _handlers.OnRespawningTeam;
             Exiled.Events.Handlers.Player.Joined += _handlers.OnJoined;
             Exiled.Events.Handlers.Player.Dying += _handlers.OnDying;
             Exiled.Events.Handlers.Player.ChangingRole += _handlers.OnChangingRole;
@@ -62,6 +63,7 @@ namespace EarlyRespawnWave
         {
             Exiled.Events.Handlers.Server.RoundStarted -= _handlers.OnRoundStarted;
             Exiled.Events.Handlers.Server.RestartingRound -= _handlers.OnRoundRestart;
+            Exiled.Events.Handlers.Server.RespawningTeam -= _handlers.OnRespawningTeam;
             Exiled.Events.Handlers.Player.Joined -= _handlers.OnJoined;
             Exiled.Events.Handlers.Player.Dying -= _handlers.OnDying;
             Exiled.Events.Handlers.Player.ChangingRole += _handlers.OnChangingRole;
