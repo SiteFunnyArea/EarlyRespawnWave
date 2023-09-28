@@ -42,16 +42,21 @@ namespace EarlyRespawnWave.Managers
                 }
             }
             // Gives custom items
-            //if (role.CustomItemInventory.Count() > 0)
-            //{
-            //    foreach (uint ItemId in role.CustomItemInventory)
-            //    {
-            //        if (!player.IsInventoryFull)
-            //        {
-            //            CustomItem.TryGive(player, ItemId);
-            //        }
-            //    }
-            //}
+            if (role.CustomItemInventory.Count() > 0)
+            {
+                foreach (uint ItemId in role.CustomItemInventory)
+                {
+                    if (!player.IsInventoryFull)
+                    {
+                        CustomItem.TryGet(ItemId, out CustomItem? ci);
+                        if(ci != null)
+                        {
+                            ci.Give(player);
+                        }
+                        
+                    }
+                }
+            }
 
             if (role.Effects.Count > 0)
             {

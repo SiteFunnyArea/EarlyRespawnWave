@@ -22,11 +22,13 @@ namespace EarlyRespawnWave
         public int RRTSpawn;
         public string PreferredAnnounement = "";
         public string Subtitles = "";
+        public int SHTeamRespawnCount;
         public List<ICustomRole> SHQueue;
         SpawnManager spawn;
 
         public void OnRoundStarted()
         {
+            SHTeamRespawnCount = 0;
             SHQueue = new List<ICustomRole>();
             spawn = Plugin.Instance.sM;
             Waves += 1;
@@ -108,16 +110,20 @@ namespace EarlyRespawnWave
                     
 
                         
-                        foreach(ICustomRole ICR in SHQueue)
-                        {
                         foreach (Exiled.API.Features.Player p in Exiled.API.Features.Player.Get(PlayerRoles.RoleTypeId.Spectator))
                         {
-                            PluginAPI.Core.Log.Debug(ICR.Name + " will be given to " + p.Nickname);
-                            spawn.SpawnClass(ICR, p);
+                            if(SHTeamRespawnCount < 7)
+                            {
+                                ICustomRole? ICR = SHQueue[0];
+                                PluginAPI.Core.Log.Debug(ICR.Name + " will be given to " + p.Nickname);
+                                spawn.SpawnClass(ICR, p);
 
-                            SHQueue.Remove(ICR);
+                                SHQueue.Remove(ICR);
+                                SHTeamRespawnCount++;
+                            }
+
                         }
-                        }
+                        
                     
                     if(SHQueue.Count > 0)
                     {
@@ -145,6 +151,7 @@ namespace EarlyRespawnWave
             IISSpawn = 0;
             RRTSpawn = 0;
             SHQueue = null;
+            SHTeamRespawnCount = 0;
             PreferredAnnounement = "";
             Subtitles = "";
             if (_timerCoroutine.IsRunning)
@@ -199,7 +206,7 @@ namespace EarlyRespawnWave
                     if (Waves == 2) Prefix = "<color=#076312>S</color><color=#076316>e</color><color=#07631A>c</color><color=#07631E>o</color><color=#076322>n</color><color=#076326>d</color>";
 
                     Exiled.API.Features.Broadcast b = new();
-                    b.Content = Plugin.Instance.Config.RespawnBroadcast.Content.Replace("{TimeElapsed}", (TimeElapsed-2).ToString()).Replace("{SpawnWave}", Prefix);
+                    b.Content = Plugin.Instance.Config.RespawnBroadcast.Content.Replace("{TimeElapsed}", (TimeElapsed-1).ToString()).Replace("{SpawnWave}", Prefix);
                     b.Duration = Plugin.Instance.Config.RespawnBroadcast.Duration;
                     b.Show = Plugin.Instance.Config.RespawnBroadcast.Show;
                     b.Type = Plugin.Instance.Config.RespawnBroadcast.Type;
