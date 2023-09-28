@@ -4,6 +4,7 @@ using Exiled.API.Features;
 using Exiled.API.Features.Roles;
 using Exiled.CustomItems.API.Features;
 using Exiled.CustomRoles.API.Features;
+using Exiled.Events.Handlers;
 using PlayerRoles;
 using PluginAPI.Core;
 using System;
@@ -69,13 +70,14 @@ namespace EarlyRespawnWave.Managers
             // Sets players health and max health
             player.MaxHealth = role.MaxHealth;
             player.Health = role.Health;
+            
             player.IsGodModeEnabled = role.IsGodMode;
             Log.Debug("Player should have health " + player.Health + "/" + player.MaxHealth);
             Log.Debug("Is God Mode? " + player.IsGodModeEnabled);
 
             // Sets players Custom Info.
             player.CustomInfo = role.CustomInfo;
-            player.UniqueRole = role.Name + "-" + role.Team.ToString();
+            player.UniqueRole = role.Name + " - " + role.Team.ToString();
             Log.Debug("Player should have CI " + player.CustomInfo + " with UR being " + player.UniqueRole);
 
             //if(role.Abilities.Count > 0)
@@ -95,6 +97,10 @@ namespace EarlyRespawnWave.Managers
             // Sets players postition
             player.Transform.position = role.SpawnLocation;
 
+            role.RoleAdded(player);
+            role.SubscribeEvent();
+
+            role.PlayersWhoHaveRole.Add(player);
             Log.Debug("This is working fine!");
 
         }
@@ -106,31 +112,36 @@ namespace EarlyRespawnWave.Managers
             {
                 p.UniqueRole = "";
                 p.CustomInfo = "";
-                //if(role.Abilities.Count > 0)
-                //{
-                //    foreach(IAbility i in role.Abilities)
-                //    {
-                //        if(i.Enabled == true)
-                //        {
-                //            i.AbilityRemoved(p);
-                //            i.UnsubscribeToEvents();
-                //        }
-                //    }
-                //}
+                role.RoleRemoved(p);
+                role.UnsubscribeEvent();
+                role.PlayersWhoHaveRole.Remove(p);
             }
         }
 
         public ICustomRole? CheckPlayerForRole(Exiled.API.Features.Player p)
         {
-            if(p.UniqueRole.Contains("Rapid Response Team")){
-                return Plugin.Instance.Config.RapidResponseTeam;
-            }
-            if (p.UniqueRole.Contains("Infiltration Insurgency Squad"))
-            {
+            if(p.UniqueRole.Contains("Rapid Response Team"))
+                return Plugin.Instance.Config.RapidResponseTeam;   
+            else if (p.UniqueRole.Contains("Infiltration Insurgency Squad"))
                 return Plugin.Instance.Config.InfiltrationInsurgencySquad;
-            }
-
-            return null;
+            else if (p.UniqueRole.Contains("Cult Leader"))
+                return Plugin.Instance.Config.SerpentsHand.SHLeader;
+            else if (p.UniqueRole.Contains("Cult Silencer"))
+                return Plugin.Instance.Config.SerpentsHand.SHSilencer;
+            else if (p.UniqueRole.Contains("Cult Engineer"))
+                return Plugin.Instance.Config.SerpentsHand.SHEngineer;
+            else if (p.UniqueRole.Contains("Cult Phantom"))
+                return Plugin.Instance.Config.SerpentsHand.SHPhantom;
+            else if (p.UniqueRole.Contains("Cult Savage"))
+                return Plugin.Instance.Config.SerpentsHand.SHSavage;
+            else if (p.UniqueRole.Contains("Cult Collector"))
+                return Plugin.Instance.Config.SerpentsHand.SHCollector;
+            else if (p.UniqueRole.Contains("Cult Destroyer"))
+                return Plugin.Instance.Config.SerpentsHand.SHDestroyer;
+            else if (p.UniqueRole.Contains("Cult Conscript"))
+                return Plugin.Instance.Config.SerpentsHand.SHLConscript;
+            else
+                return null;
         }
 
         public bool PlayerHasACustomRole(Exiled.API.Features.Player p)

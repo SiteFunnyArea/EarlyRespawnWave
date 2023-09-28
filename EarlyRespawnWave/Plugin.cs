@@ -24,8 +24,6 @@ namespace EarlyRespawnWave
         public bool TimeOver;
 
         public SpawnManager sM;
-
-        public ICustomRole ICR;
         public override void OnEnabled()
         {
             Instance = this;

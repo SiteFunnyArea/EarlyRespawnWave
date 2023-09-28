@@ -123,6 +123,11 @@ namespace EarlyRespawnWave
                             }
 
                         }
+
+                    if(SHTeamRespawnCount > 0)
+                    {
+                        Exiled.API.Features.Cassie.MessageTranslated(Plugin.Instance.Config.CassieAnnouncements.SHCassie.CassieAnnouncement, Plugin.Instance.Config.CassieAnnouncements.SHCassie.CassieSubtitle);
+                    }
                         
                     
                     if(SHQueue.Count > 0)
@@ -179,12 +184,10 @@ namespace EarlyRespawnWave
                 }
             }
 
-            //if (spawn.CheckPlayerForRole(ev.Player) != null)
-            //{
-            //    ev.Player.UniqueRole = "";
-            //    ev.Player.CustomInfo = "";
-            //    spawn.RemoveRole(ev.Player);
-            //}
+            if (spawn.CheckPlayerForRole(ev.Player) != null)
+            {
+                spawn.RemoveRole(ev.Player);
+            }
         }
 
         public IEnumerator<float> TimerCoroutine()

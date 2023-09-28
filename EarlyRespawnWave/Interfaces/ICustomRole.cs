@@ -22,8 +22,17 @@ namespace EarlyRespawnWave.Interfaces
 
         [YamlIgnore]
         public virtual List<Player> PlayersWhoHaveRole { get; set; } = new();
+
+        public virtual bool Check(Player p) {
+            if (PlayersWhoHaveRole.Contains(p))
+                return true;
+            else
+                return false;
+        }
+
         [YamlIgnore]
         public virtual ICustomRole GetCR { get; set; }
+
         public abstract string Name { get; set; }
         public virtual string Description { get; set; }
         public abstract Teams Team { get; set; } 
@@ -39,5 +48,10 @@ namespace EarlyRespawnWave.Interfaces
         public abstract Dictionary<AmmoType, ushort> Ammo { get; set; }
         public abstract UnityEngine.Vector3 SpawnLocation { get; set; }
         public virtual bool IsGodMode { get; set; } = false;
+        public virtual void RoleAdded(Player p) { PluginAPI.Core.Log.Debug("Gave role " + Name + " to " + p.Nickname); }
+        public virtual void RoleRemoved(Player p) { PluginAPI.Core.Log.Debug("Removed role " + Name + " from " + p.Nickname); }
+        public virtual void SubscribeEvent() { }
+        public virtual void UnsubscribeEvent() { }
+
     }
 }
