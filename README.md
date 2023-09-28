@@ -8,7 +8,7 @@ How ERW determines what someone should spawn as is quite easy right now, once a 
 This system will be replaced with a new one soon though.
 
 # When Does A Early Spawnwave Occur
-By default, in the config, an early spawnwave occurs after 2 minutes and 30 seconds after a game begins, and also 2 minutes and 30 seconds after the first spawnwave occurs.
+By default, in the config, an early spawnwave occurs after 2 minutes and 30 seconds after a game begins, and also 2 minutes and 30 seconds after the first spawnwave occurs. Those are the only two times an early spawnwave occurs.
 
 # ERW Spawnable Teams
 There are three teams right now that a player can spawn as when a early-game spawnwave occurs
