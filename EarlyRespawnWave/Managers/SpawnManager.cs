@@ -37,16 +37,16 @@ namespace EarlyRespawnWave.Managers
                 }
             }
             // Gives custom items
-            if (role.CustomItemInventory.Count() > 0)
-            {
-                foreach (uint ItemId in role.CustomItemInventory)
-                {
-                    if (!player.IsInventoryFull)
-                    {
-                        CustomItem.TryGive(player, ItemId);
-                    }
-                }
-            }
+            //if (role.CustomItemInventory.Count() > 0)
+            //{
+            //    foreach (uint ItemId in role.CustomItemInventory)
+            //    {
+            //        if (!player.IsInventoryFull)
+            //        {
+            //            CustomItem.TryGive(player, ItemId);
+            //        }
+            //    }
+            //}
 
             if (role.Effects.Count > 0)
             {
@@ -64,17 +64,17 @@ namespace EarlyRespawnWave.Managers
             // Sets players Custom Info.
             player.CustomInfo = role.CustomInfo;
             player.UniqueRole = role.Name + "-" + role.Team.ToString();
-            if(role.Abilities.Count > 0)
-            {
-                foreach(IAbility i in role.Abilities)
-                {
-                    if(i.Enabled == true)
-                    {
-                        i.AbilityAdded(player);
-                        i.SubscribeToEvents();
-                    }
-                }
-            }
+            //if(role.Abilities.Count > 0)
+            //{
+            //    foreach(IAbility i in role.Abilities)
+            //    {
+            //        if(i.Enabled == true)
+            //        {
+            //            i.AbilityAdded(player);
+            //            i.SubscribeToEvents();
+            //        }
+            //    }
+            //}
 
             player.Broadcast(role.Broadcast);
 
@@ -90,17 +90,17 @@ namespace EarlyRespawnWave.Managers
             {
                 p.UniqueRole = "";
                 p.CustomInfo = "";
-                if(role.Abilities.Count > 0)
-                {
-                    foreach(IAbility i in role.Abilities)
-                    {
-                        if(i.Enabled == true)
-                        {
-                            i.AbilityRemoved(p);
-                            i.UnsubscribeToEvents();
-                        }
-                    }
-                }
+                //if(role.Abilities.Count > 0)
+                //{
+                //    foreach(IAbility i in role.Abilities)
+                //    {
+                //        if(i.Enabled == true)
+                //        {
+                //            i.AbilityRemoved(p);
+                //            i.UnsubscribeToEvents();
+                //        }
+                //    }
+                //}
             }
         }
 

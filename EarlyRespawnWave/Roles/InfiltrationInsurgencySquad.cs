@@ -25,7 +25,7 @@ namespace EarlyRespawnWave.Roles
             Show = true,
             Type = global::Broadcast.BroadcastFlags.Normal,
         };
-        public override string CustomInfo { get; set; } = "<color=#228B22>Infiltration Insurgency Squad</color>";
+        public override string CustomInfo { get; set; } = "Infiltration Insurgency Squad";
         public override List<ItemType> Inventory { get; set; } = new()
         {
             ItemType.GunAK,

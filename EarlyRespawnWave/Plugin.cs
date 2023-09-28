@@ -1,4 +1,5 @@
-﻿using EarlyRespawnWave.Managers;
+﻿using EarlyRespawnWave.Interfaces;
+using EarlyRespawnWave.Managers;
 using EarlyRespawnWave.Roles;
 using Exiled.API.Features;
 
@@ -24,6 +25,7 @@ namespace EarlyRespawnWave
 
         public SpawnManager sM;
 
+        public ICustomRole ICR;
         public override void OnEnabled()
         {
             Instance = this;

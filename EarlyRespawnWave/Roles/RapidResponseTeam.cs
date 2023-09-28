@@ -43,12 +43,6 @@ namespace EarlyRespawnWave.Roles
                 50
             }
         };
-
-        public override List<IAbility> Abilities { get; set; } = new()
-        {
-            new TestAbility()
-        };
-
         public override Vector3 SpawnLocation { get; set; } = new(123.751f, 988.762f, 21.153f);
     }
 }
