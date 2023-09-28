@@ -6,6 +6,10 @@ EarlyRespawnWave is a plugin on the SiteFunnyArea SCP:SL Heavily Modded Server, 
 How ERW determines what someone should spawn as is quite easy right now, once a player dies, if they are classified as a 'passive' role (such as Scientist, Mobile Task Force, Facility Guard) they will spawn as a Rapid Response Team member, meanwhile players who are classified as having a 'non-passive' role (such as SCPs, Class-D, Chaos Insurgency) will spawn as a Infiltration Insurgency Squad member.
 
 This system will be replaced with a new one soon though.
+
+# When Does A Early Spawnwave Occur
+By default, in the config, an early spawnwave occurs after 2 minutes and 30 seconds after a game begins, and also 2 minutes and 30 seconds after the first spawnwave occurs.
+
 # ERW Spawnable Teams
 There are three teams right now that a player can spawn as when a early-game spawnwave occurs
 
