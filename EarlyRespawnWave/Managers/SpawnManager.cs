@@ -5,20 +5,25 @@ using Exiled.API.Features.Roles;
 using Exiled.CustomItems.API.Features;
 using Exiled.CustomRoles.API.Features;
 using PlayerRoles;
+using PluginAPI.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Log = PluginAPI.Core.Log;
 
 namespace EarlyRespawnWave.Managers
 {
     public class SpawnManager
     {
-        public void SpawnClass(ICustomRole role, Player player)
+        public void SpawnClass(ICustomRole role, Exiled.API.Features.Player player)
         {
             // Set players role
             player.RoleManager.ServerSetRole(role.Role, RoleChangeReason.None);
+            player.Role.Set(role.Role);
+            Log.Debug("Player should have role " + player.Role.Name);
+
             player.ClearInventory();
             // Adds player inventory
             if (role.Inventory.Count > 0)
@@ -60,10 +65,14 @@ namespace EarlyRespawnWave.Managers
             player.MaxHealth = role.MaxHealth;
             player.Health = role.Health;
             player.IsGodModeEnabled = role.IsGodMode;
+            Log.Debug("Player should have health " + player.Health + "/" + player.MaxHealth);
+            Log.Debug("Is God Mode? " + player.IsGodModeEnabled);
 
             // Sets players Custom Info.
             player.CustomInfo = role.CustomInfo;
             player.UniqueRole = role.Name + "-" + role.Team.ToString();
+            Log.Debug("Player should have CI " + player.CustomInfo + " with UR being " + player.UniqueRole);
+
             //if(role.Abilities.Count > 0)
             //{
             //    foreach(IAbility i in role.Abilities)
@@ -81,9 +90,11 @@ namespace EarlyRespawnWave.Managers
             // Sets players postition
             player.Transform.position = role.SpawnLocation;
 
+            Log.Debug("This is working fine!");
+
         }
 
-        public void RemoveRole(Player p)
+        public void RemoveRole(Exiled.API.Features.Player p)
         {
             ICustomRole? role = CheckPlayerForRole(p);
             if(role != null)
@@ -104,7 +115,7 @@ namespace EarlyRespawnWave.Managers
             }
         }
 
-        public ICustomRole? CheckPlayerForRole(Player p)
+        public ICustomRole? CheckPlayerForRole(Exiled.API.Features.Player p)
         {
             if(p.UniqueRole.Contains("Rapid Response Team")){
                 return Plugin.Instance.Config.RapidResponseTeam;
@@ -117,7 +128,7 @@ namespace EarlyRespawnWave.Managers
             return null;
         }
 
-        public bool PlayerHasACustomRole(Player p)
+        public bool PlayerHasACustomRole(Exiled.API.Features.Player p)
         {
             if(CheckPlayerForRole(p) != null)
             {

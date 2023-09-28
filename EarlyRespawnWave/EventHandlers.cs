@@ -28,7 +28,7 @@ namespace EarlyRespawnWave
         public void OnRoundStarted()
         {
             SHQueue = new List<ICustomRole>();
-            SpawnManager spawn = Plugin.Instance.sM;
+            spawn = Plugin.Instance.sM;
             Waves += 1;
             _timerCoroutine = Timing.RunCoroutine(TimerCoroutine());
             Timing.CallDelayed(Plugin.Instance.Config.Seconds, () =>
@@ -107,15 +107,16 @@ namespace EarlyRespawnWave
                     SHQueue.Add(Plugin.Instance.Config.SerpentsHand.SHDestroyer);
                     
 
+                        
+                        foreach(ICustomRole ICR in SHQueue)
+                        {
                         foreach (Exiled.API.Features.Player p in Exiled.API.Features.Player.Get(PlayerRoles.RoleTypeId.Spectator))
                         {
-                            ICustomRole? i = SHQueue[0];
-                            if(i != null)
-                            {
-                                PluginAPI.Core.Log.Debug(i.Name);
-                                spawn.SpawnClass(i, p);
-                                SHQueue.Remove(i);
-                            }
+                            PluginAPI.Core.Log.Debug(ICR.Name + " will be given to " + p.Nickname);
+                            spawn.SpawnClass(ICR, p);
+
+                            SHQueue.Remove(ICR);
+                        }
                         }
                     
                     if(SHQueue.Count > 0)
