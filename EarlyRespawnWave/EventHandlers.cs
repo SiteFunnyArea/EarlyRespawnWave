@@ -147,13 +147,8 @@ namespace EarlyRespawnWave
         }
         public void OnChangingRole(ChangingRoleEventArgs ev)
         {
-
-            if (ev.Player.UniqueRole.Contains("-SpawnAs") && ev.NewRole != PlayerRoles.RoleTypeId.Spectator)
-            {
                 ev.Player.UniqueRole = "";
                 ev.Player.ClearBroadcasts();
-            }
-
         }
 
         public void OnRoundRestart()
@@ -233,7 +228,7 @@ namespace EarlyRespawnWave
                     string OfficialText = "";
                     if (Waves == 1) {
                         Prefix = "<color=#076312>F</color><color=#076319>i</color><color=#076320>r</color><color=#076327>s</color><color=#07632E>t</color>";
-                        OfficialText = Plugin.Instance.Config.RespawnBroadcast.Content + "<br><i>{TimeElapsed}<br></i></size><size=20><color=#FF0000>RRT:</color> <color=white>{RRT}</color> - <color=#07633C>IIS:</color> <color=white>{IIS}</color></size>";
+                        OfficialText = Plugin.Instance.Config.RespawnBroadcast.Content + "<br></i></size><size=20><color=#FF0000>RRT:</color> <color=white>{RRT}</color> - <color=#07633C>IIS:</color> <color=white>{IIS}</color></size>";
                     }
                     if (Waves == 2) {
                         Prefix = "<color=#076312>S</color><color=#076316>e</color><color=#07631A>c</color><color=#07631E>o</color><color=#076322>n</color><color=#076326>d</color>";
