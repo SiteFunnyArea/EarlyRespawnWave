@@ -32,7 +32,6 @@ namespace EarlyRespawnWave.Interfaces
 
         [YamlIgnore]
         public virtual ICustomRole GetCR { get; set; }
-
         public abstract string Name { get; set; }
         public virtual string Description { get; set; }
         public abstract Teams Team { get; set; } 

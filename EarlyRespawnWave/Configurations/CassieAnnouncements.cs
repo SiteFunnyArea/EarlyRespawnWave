@@ -29,8 +29,8 @@ namespace EarlyRespawnWave.Configurations
         [Description("Announcement for when only Serpents Hand spawns")]
         public CASSIEAnnouncer SHCassie { get; set; } = new()
         {
-            CassieAnnouncement = "pitch_0.5 .g5 .g5 pitch_1.0 Attention, all personnel. Authorized Military Personnel HASENTERED",
-            CassieSubtitle = "Attention, all personnel: Rapid Response Team has entered the Facility. They will escort Foundation personnel out shortly."
+            CassieAnnouncement = "cassie pitch_0.5 .g4 .g4 pitch_1.0 Attention, pitch_0.7 Serpents pitch_0.4 Hand .g1 .g3 pitch_1.0 Military has been detected on Surface Zone pitch_0.4 .g2 .g1 .g6 .g4\r\n",
+            CassieSubtitle = "Attention, Serpents Hand Millitary has been detected on Surface Zone."
         };
     }
 }

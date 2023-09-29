@@ -11,7 +11,7 @@ public enum Teams
     None,
     RapidResponseTeam,
     InfiltrationInsurgencySquad,
-    SerpentsHand, // to be used later
+    SerpentsHand,
     Ntf,
     Chaos
 }

@@ -21,6 +21,7 @@ namespace EarlyRespawnWave.Managers
         public void SpawnClass(ICustomRole role, Exiled.API.Features.Player player)
         {
             // Set players role
+
             player.RoleManager.ServerSetRole(role.Role, RoleChangeReason.None);
             player.Role.Set(role.Role);
             Log.Debug("Player should have role " + player.Role.Name);
@@ -80,6 +81,8 @@ namespace EarlyRespawnWave.Managers
             player.UniqueRole = role.Name + " - " + role.Team.ToString();
             Log.Debug("Player should have CI " + player.CustomInfo + " with UR being " + player.UniqueRole);
 
+
+
             //if(role.Abilities.Count > 0)
             //{
             //    foreach(IAbility i in role.Abilities)
@@ -97,10 +100,12 @@ namespace EarlyRespawnWave.Managers
             // Sets players postition
             player.Transform.position = role.SpawnLocation;
 
+
+            role.PlayersWhoHaveRole.Add(player);
+            
             role.RoleAdded(player);
             role.SubscribeEvent();
 
-            role.PlayersWhoHaveRole.Add(player);
             Log.Debug("This is working fine!");
 
         }
