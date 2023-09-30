@@ -45,6 +45,7 @@ namespace EarlyRespawnWave.Interfaces
         public abstract List<ItemType> Inventory { get;set; }
         public virtual List<uint> CustomItemInventory { get; set; } = new();
         public abstract Dictionary<AmmoType, ushort> Ammo { get; set; }
+        public virtual bool KeycardBypass { get; set; } = false;
         public abstract UnityEngine.Vector3 SpawnLocation { get; set; }
         public virtual bool IsGodMode { get; set; } = false;
         public virtual void RoleAdded(Player p) { PluginAPI.Core.Log.Debug("Gave role " + Name + " to " + p.Nickname); }

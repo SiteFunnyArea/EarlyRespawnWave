@@ -18,8 +18,9 @@ namespace EarlyRespawnWave
         public override Version Version => new Version(1,1,0);
 
         public static Plugin Instance;
+        public static List<string> TimerHidden { get; } = new();
 
-        private EventHandlers _handlers;
+        public EventHandlers _handlers;
 
         public bool TimeOver;
 
@@ -57,6 +58,7 @@ namespace EarlyRespawnWave
             Exiled.Events.Handlers.Player.Joined += _handlers.OnJoined;
             Exiled.Events.Handlers.Player.Dying += _handlers.OnDying;
             Exiled.Events.Handlers.Player.ChangingRole += _handlers.OnChangingRole;
+            
         }
 
         private void UnregisterEvents()

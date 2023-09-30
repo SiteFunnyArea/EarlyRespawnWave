@@ -147,8 +147,14 @@ namespace EarlyRespawnWave
         }
         public void OnChangingRole(ChangingRoleEventArgs ev)
         {
-                ev.Player.UniqueRole = "";
-                ev.Player.ClearBroadcasts();
+            ev.Player.UniqueRole = "";
+                    
+            ev.Player.ClearBroadcasts();
+
+            if (spawn.CheckPlayerForRole(ev.Player) != null)
+            {
+                spawn.RemoveRole(ev.Player);
+            }
         }
 
         public void OnRoundRestart()
@@ -224,6 +230,9 @@ namespace EarlyRespawnWave
                     break;
                 foreach (Exiled.API.Features.Player p in Exiled.API.Features.Player.Get(PlayerRoles.RoleTypeId.Spectator))
                 {
+                    if (Plugin.TimerHidden.Contains(p.UserId))
+                        continue;
+
                     string Prefix = "";
                     string OfficialText = "";
                     if (Waves == 1) {

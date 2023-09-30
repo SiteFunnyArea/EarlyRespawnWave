@@ -51,7 +51,7 @@ namespace EarlyRespawnWave.Roles
                 24
             }
         };
-
+        public override bool KeycardBypass { get; set; } = true;
         public override void SubscribeEvent()
         {
             Exiled.Events.Handlers.Scp049.Attacking += OnAttack049;

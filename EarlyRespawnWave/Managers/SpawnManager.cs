@@ -81,7 +81,7 @@ namespace EarlyRespawnWave.Managers
             player.UniqueRole = role.Name + " - " + role.Team.ToString();
             Log.Debug("Player should have CI " + player.CustomInfo + " with UR being " + player.UniqueRole);
 
-
+            player.IsBypassModeEnabled = role.KeycardBypass;
 
             //if(role.Abilities.Count > 0)
             //{
@@ -117,6 +117,7 @@ namespace EarlyRespawnWave.Managers
             {
                 p.UniqueRole = "";
                 p.CustomInfo = "";
+                p.IsBypassModeEnabled = false;
                 role.RoleRemoved(p);
                 role.UnsubscribeEvent();
                 role.PlayersWhoHaveRole.Remove(p);

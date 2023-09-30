@@ -12,6 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
+using YamlDotNet.Serialization;
 
 namespace EarlyRespawnWave.Roles
 {
@@ -51,6 +52,8 @@ namespace EarlyRespawnWave.Roles
             }
         };
 
+        [YamlIgnore] public float Multiplier { get; set; } = 1f;
+
         public override void SubscribeEvent()
         {
             Exiled.Events.Handlers.Scp049.Attacking += OnAttack049;
@@ -69,6 +72,19 @@ namespace EarlyRespawnWave.Roles
             Exiled.Events.Handlers.Scp173.Blinking -= Blink;
             Exiled.Events.Handlers.Player.Shot -= OnShot;
             Exiled.Events.Handlers.Player.Hurting -= OnHurting;
+        }
+
+        public void OnKillingPlayer(DyingEventArgs ev)
+        {
+            if (ev.Attacker != null && Check(ev.Attacker))
+            {
+                Effect e = new();
+                e.Type = EffectType.DamageReduction;
+                e.Duration = 5;
+                e.Intensity = 1;
+                e.IsEnabled = true;
+                ev.Attacker.EnableEffect(e);
+            }
         }
 
         public void OnAddingTarget(AddingTargetEventArgs ev)

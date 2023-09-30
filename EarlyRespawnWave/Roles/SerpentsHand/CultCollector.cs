@@ -6,6 +6,7 @@ using Exiled.Events.EventArgs.Player;
 using Exiled.Events.EventArgs.Scp096;
 using Exiled.Events.EventArgs.Scp173;
 using Exiled.Events.EventArgs.Scp939;
+using InventorySystem.Items.Usables.Scp330;
 using PlayerRoles;
 using System;
 using System.Collections.Generic;
@@ -60,6 +61,8 @@ namespace EarlyRespawnWave.Roles
             Exiled.Events.Handlers.Scp173.Blinking += Blink;
             Exiled.Events.Handlers.Player.Shot += OnShot;
             Exiled.Events.Handlers.Player.Hurting += OnHurting;
+            Exiled.Events.Handlers.Player.Dying += OnKillingPlayer;
+
         }
 
         public override void UnsubscribeEvent()
@@ -70,6 +73,51 @@ namespace EarlyRespawnWave.Roles
             Exiled.Events.Handlers.Scp173.Blinking -= Blink;
             Exiled.Events.Handlers.Player.Shot -= OnShot;
             Exiled.Events.Handlers.Player.Hurting -= OnHurting;
+            Exiled.Events.Handlers.Player.Dying -= OnKillingPlayer;
+        }
+
+        public void OnKillingPlayer(DyingEventArgs ev)
+        {
+            if (ev.Attacker != null && Check(ev.Attacker))
+            {
+                CandyKindID c;
+
+                int i = UnityEngine.Random.Range(1, 8);
+
+                if(i == 1)
+                {
+                    c = CandyKindID.Rainbow;
+                }else if (i == 2)
+                {
+                    c = CandyKindID.Yellow;
+                }
+                else if (i == 3)
+                {
+                    c = CandyKindID.Purple;
+                }
+                else if (i == 4)
+                {
+                    c = CandyKindID.Red;
+                }
+                else if (i == 5)
+                {
+                    c = CandyKindID.Green;
+                }
+                else if (i == 6)
+                {
+                    c = CandyKindID.Blue;
+                }
+                else if (i == 7)
+                {
+                    c = CandyKindID.Pink;
+                }
+                else
+                {
+                    c = CandyKindID.None;
+                }
+
+                ev.Attacker.TryAddCandy(c);
+            }
         }
 
         public void OnAddingTarget(AddingTargetEventArgs ev)
