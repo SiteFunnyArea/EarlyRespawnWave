@@ -86,7 +86,7 @@ namespace EarlyRespawnWave.Roles
         {
             if (ev.Player != null && ev.Player.Role != null && ev.Attacker != null && ev.Attacker.Role != null)
             {
-                if (Check(ev.Player) && ev.Attacker.Role.Side == Exiled.API.Enums.Side.Scp || ev.Player.Role.Side == Side.Scp && Check(ev.Attacker))
+                if (Check(ev.Player) && ev.Attacker.Role.Side == Side.Scp || ev.Player.Role.Side == Side.Scp && Check(ev.Attacker))
                 {
                     ev.IsAllowed = false;
                 }

@@ -16,7 +16,7 @@ namespace EarlyRespawnWave.Configurations
         public CultSavage SHSavage { get; set; } = new CultSavage();
         public CultCollector SHCollector { get; set; } = new CultCollector();
         public CultDestroyer SHDestroyer { get; set; } = new CultDestroyer();
-        public CultConscript SHLConscript { get; set; } = new CultConscript();
+        public CultConscript SHConscript { get; set; } = new CultConscript();
 
     }
 }

@@ -106,7 +106,7 @@ namespace EarlyRespawnWave.Managers
             role.RoleAdded(player);
             role.SubscribeEvent();
 
-            Log.Debug("This is working fine!");
+            
 
         }
 
@@ -145,21 +145,9 @@ namespace EarlyRespawnWave.Managers
             else if (p.UniqueRole.Contains("Cult Destroyer"))
                 return Plugin.Instance.Config.SerpentsHand.SHDestroyer;
             else if (p.UniqueRole.Contains("Cult Conscript"))
-                return Plugin.Instance.Config.SerpentsHand.SHLConscript;
+                return Plugin.Instance.Config.SerpentsHand.SHConscript;
             else
                 return null;
-        }
-
-        public bool PlayerHasACustomRole(Exiled.API.Features.Player p)
-        {
-            if(CheckPlayerForRole(p) != null)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
         }
     }
 }

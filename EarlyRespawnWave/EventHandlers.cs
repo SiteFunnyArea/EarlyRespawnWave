@@ -27,7 +27,7 @@ namespace EarlyRespawnWave
         public int SHTeamRespawnCount;
         public List<ICustomRole> SHQueue;
         SpawnManager spawn;
-
+        public int AmountSpawned = 0;
         public void OnRoundStarted()
         {
             SHTeamRespawnCount = 0;
@@ -76,8 +76,8 @@ namespace EarlyRespawnWave
 
 
                 foreach (Exiled.API.Features.Player p in Exiled.API.Features.Player.Get(PlayerRoles.RoleTypeId.Spectator)){
-
                     //PluginAPI.Core.Log.Debug("user detected " + p.Nickname + " with info " + p.UniqueRole);
+                    AmountSpawned += 1;
                         if (PreferredSpawn == Teams.RapidResponseTeam)
                         {
                             spawn.SpawnClass(Plugin.Instance.Config.RapidResponseTeam, p);
@@ -90,9 +90,11 @@ namespace EarlyRespawnWave
                  }
 
 
-                if (PreferredAnnounement.Count() > 0)
+                if (PreferredAnnounement.Count() > 0 && AmountSpawned > 0)
+                {
                     Exiled.API.Features.Cassie.MessageTranslated(PreferredAnnounement, Subtitles, false, true, true);
-                
+                }
+
             });
         }
         
@@ -166,6 +168,7 @@ namespace EarlyRespawnWave
             RRTTickets = 50;
             SHQueue = null;
             Waves = 0;
+            AmountSpawned = 0;
             SHTeamRespawnCount = 0;
             PreferredAnnounement = "";
             Subtitles = "";
@@ -187,26 +190,30 @@ namespace EarlyRespawnWave
             {
                 if(ev.Player.Role.Team == PlayerRoles.Team.FoundationForces || ev.Player.Role.Team == PlayerRoles.Team.Scientists)
                 {
+                    if (ev.DamageHandler.Attacker == null)
+                    {
+                        RRTTickets -= 1;
+                        IISTickets += 1;
+                    }
+
                     if (ev.Attacker.Role.Team == PlayerRoles.Team.SCPs || ev.Attacker.Role.Team == PlayerRoles.Team.ClassD || ev.Attacker.Role.Team == PlayerRoles.Team.ChaosInsurgency)
                     {
                         RRTTickets += 1;
                         IISTickets -= 1;
-                    }else if(ev.Attacker == null)
-                    {
-                        RRTTickets -= 1;
-                        IISTickets += 1;
                     }
                 }else if (ev.Player.Role.Team == PlayerRoles.Team.ClassD || ev.Player.Role.Team == PlayerRoles.Team.SCPs)
                 {
-                    if (ev.Attacker.Role.Team == PlayerRoles.Team.FoundationForces || ev.Attacker.Role.Team == PlayerRoles.Team.Scientists)
-                    {
-                        RRTTickets -= 1;
-                        IISTickets += 1;
-                    }else if(ev.Attacker == null)
+                    if (ev.DamageHandler.Attacker == null)
                     {
                         RRTTickets += 1;
                         IISTickets -= 1;
                     }
+
+                    if (ev.Attacker.Role.Team == PlayerRoles.Team.FoundationForces || ev.Attacker.Role.Team == PlayerRoles.Team.Scientists)
+                    {
+                        RRTTickets -= 1;
+                        IISTickets += 1;
+                    } 
                 }
             }
 
