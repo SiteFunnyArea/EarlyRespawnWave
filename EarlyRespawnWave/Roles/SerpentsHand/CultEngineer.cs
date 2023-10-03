@@ -2,6 +2,7 @@
 using EarlyRespawnWave.Interfaces;
 using Exiled.API.Enums;
 using Exiled.API.Features;
+using Exiled.API.Features.Items;
 using Exiled.Events.EventArgs.Player;
 using Exiled.Events.EventArgs.Scp096;
 using Exiled.Events.EventArgs.Scp173;
@@ -60,6 +61,9 @@ namespace EarlyRespawnWave.Roles
             Exiled.Events.Handlers.Scp173.Blinking += Blink;
             Exiled.Events.Handlers.Player.Shot += OnShot;
             Exiled.Events.Handlers.Player.Hurting += OnHurting;
+            Exiled.Events.Handlers.Player.Dying += OnDeath;
+            base.SubscribeEvent();
+
         }
 
         public override void UnsubscribeEvent()
@@ -70,6 +74,16 @@ namespace EarlyRespawnWave.Roles
             Exiled.Events.Handlers.Scp173.Blinking -= Blink;
             Exiled.Events.Handlers.Player.Shot -= OnShot;
             Exiled.Events.Handlers.Player.Hurting -= OnHurting;
+            Exiled.Events.Handlers.Player.Dying -= OnDeath;
+            base.UnsubscribeEvent();
+        }
+
+        public void OnDeath(DyingEventArgs ev)
+        {
+            if (Check(ev.Player))
+            {
+                Plugin.Instance.sM.RemoveRole(this, ev.Player);
+            }
         }
 
         public void OnAddingTarget(AddingTargetEventArgs ev)

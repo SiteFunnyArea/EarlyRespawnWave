@@ -2,6 +2,8 @@
 using EarlyRespawnWave.Interfaces;
 using Exiled.API.Enums;
 using Exiled.API.Features;
+using Exiled.API.Features.Items;
+using Exiled.API.Features.Pickups;
 using Exiled.Events.EventArgs.Player;
 using Exiled.Events.EventArgs.Scp096;
 using Exiled.Events.EventArgs.Scp173;
@@ -40,6 +42,18 @@ namespace EarlyRespawnWave.Roles
 
         };
 
+        public void OnDeath(DyingEventArgs ev) {
+
+            ExplosiveGrenade g = (ExplosiveGrenade)Item.Create(ItemType.GrenadeHE);
+            g.FuseTime = 1;
+            g.SpawnActive(ev.Player.Position, ev.Player);
+
+            if (Check(ev.Player))
+            {
+                Plugin.Instance.sM.RemoveRole(this, ev.Player);
+            }
+        }
+
         public override void SubscribeEvent()
         {
             Exiled.Events.Handlers.Scp049.Attacking += OnAttack049;
@@ -48,6 +62,10 @@ namespace EarlyRespawnWave.Roles
             Exiled.Events.Handlers.Scp173.Blinking += Blink;
             Exiled.Events.Handlers.Player.Shot += OnShot;
             Exiled.Events.Handlers.Player.Hurting += OnHurting;
+            Exiled.Events.Handlers.Player.Dying += OnDeath;
+            base.SubscribeEvent();
+
+
         }
 
         public override void UnsubscribeEvent()
@@ -58,6 +76,9 @@ namespace EarlyRespawnWave.Roles
             Exiled.Events.Handlers.Scp173.Blinking -= Blink;
             Exiled.Events.Handlers.Player.Shot -= OnShot;
             Exiled.Events.Handlers.Player.Hurting -= OnHurting;
+            Exiled.Events.Handlers.Player.Dying -= OnDeath;
+            base.UnsubscribeEvent();
+
         }
 
         public void OnAddingTarget(AddingTargetEventArgs ev)

@@ -124,6 +124,16 @@ namespace EarlyRespawnWave.Managers
             }
         }
 
+        public void RemoveRole(ICustomRole role,Exiled.API.Features.Player p)
+        {
+                p.UniqueRole = "";
+                p.CustomInfo = "";
+                p.IsBypassModeEnabled = false;
+                role.RoleRemoved(p);
+                role.UnsubscribeEvent();
+                role.PlayersWhoHaveRole.Remove(p);
+        }
+
         public ICustomRole? CheckPlayerForRole(Exiled.API.Features.Player p)
         {
             if(p.UniqueRole.Contains("Rapid Response Team"))

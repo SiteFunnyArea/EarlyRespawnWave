@@ -62,6 +62,10 @@ namespace EarlyRespawnWave.Roles
             Exiled.Events.Handlers.Scp173.Blinking += Blink;
             Exiled.Events.Handlers.Player.Shot += OnShot;
             Exiled.Events.Handlers.Player.Hurting += OnHurting;
+            Exiled.Events.Handlers.Player.Dying += OnKillingPlayer;
+            base.SubscribeEvent();
+
+
         }
 
         public override void UnsubscribeEvent()
@@ -72,10 +76,17 @@ namespace EarlyRespawnWave.Roles
             Exiled.Events.Handlers.Scp173.Blinking -= Blink;
             Exiled.Events.Handlers.Player.Shot -= OnShot;
             Exiled.Events.Handlers.Player.Hurting -= OnHurting;
+            Exiled.Events.Handlers.Player.Dying -= OnKillingPlayer;
+            base.UnsubscribeEvent();
+
         }
 
         public void OnKillingPlayer(DyingEventArgs ev)
         {
+            if (Check(ev.Player))
+            {
+                Plugin.Instance.sM.RemoveRole(this, ev.Player);
+            }
             if (ev.Attacker != null && Check(ev.Attacker))
             {
                 Effect e = new();

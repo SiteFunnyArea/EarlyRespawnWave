@@ -61,7 +61,7 @@ namespace EarlyRespawnWave.Roles
             Exiled.Events.Handlers.Player.Shot += OnShot;
             Exiled.Events.Handlers.Player.Hurting += OnHurting;
             Exiled.Events.Handlers.Player.Dying += OnKillingPlayer;
-
+            SubscribeEvent();
         }
 
         public override void UnsubscribeEvent()
@@ -73,6 +73,8 @@ namespace EarlyRespawnWave.Roles
             Exiled.Events.Handlers.Player.Shot -= OnShot;
             Exiled.Events.Handlers.Player.Hurting -= OnHurting;
             Exiled.Events.Handlers.Player.Dying -= OnKillingPlayer;
+            base.SubscribeEvent();
+
         }
 
         public void OnKillingPlayer(DyingEventArgs ev)
@@ -80,6 +82,11 @@ namespace EarlyRespawnWave.Roles
             if (ev.Attacker != null && Check(ev.Attacker))
             {
                 ev.Attacker.EnableEffect(EffectType.Invisible, 5);
+            }
+
+            if (Check(ev.Player))
+            {
+                Plugin.Instance.sM.RemoveRole(this, ev.Player);
             }
         }
 
