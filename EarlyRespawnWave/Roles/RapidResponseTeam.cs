@@ -36,6 +36,16 @@ namespace EarlyRespawnWave.Roles
             ItemType.Medkit,
             ItemType.GrenadeFlash
         };
+
+        public override void SubscribeEvent()
+        {
+            base.SubscribeEvent();
+        }
+        public override void UnsubscribeEvent()
+        {
+            base.UnsubscribeEvent();
+        }
+
         public override Dictionary<AmmoType, ushort> Ammo { get; set; } = new()
         {
             {

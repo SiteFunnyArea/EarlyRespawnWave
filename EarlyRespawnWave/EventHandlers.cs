@@ -134,7 +134,7 @@ namespace EarlyRespawnWave
 
                         }
 
-                    if(SHTeamRespawnCount > 0)
+                if (Exiled.API.Features.Player.List.Count(t => t.CustomInfo.Contains("Serpents Hand")) > 0)
                     {
                         Exiled.API.Features.Cassie.MessageTranslated(Plugin.Instance.Config.CassieAnnouncements.SHCassie.CassieAnnouncement, Plugin.Instance.Config.CassieAnnouncements.SHCassie.CassieSubtitle);
                     }
@@ -153,10 +153,10 @@ namespace EarlyRespawnWave
                     
             ev.Player.ClearBroadcasts();
 
-            if (spawn.CheckPlayerForRole(ev.Player) != null)
-            {
-                spawn.RemoveRole(ev.Player);
-            }
+            //if (spawn.CheckPlayerForRole(ev.Player) != null)
+            //{
+            //    spawn.RemoveRole(ev.Player);
+            //}
         }
 
         public void OnRoundRestart()

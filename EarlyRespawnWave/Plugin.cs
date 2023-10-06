@@ -15,7 +15,7 @@ namespace EarlyRespawnWave
 
         public override Version RequiredExiledVersion => new Version(8,0,0);
 
-        public override Version Version => new Version(1,1,0);
+        public override Version Version => new Version(1,1,1);
 
         public static Plugin Instance;
         public static List<string> TimerHidden { get; } = new();

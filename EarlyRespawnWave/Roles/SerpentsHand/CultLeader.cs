@@ -140,16 +140,15 @@ namespace EarlyRespawnWave.Roles
             }
         }
 
-        public void OnKillingPlayer(DyingEventArgs ev)
+        public override void OnKillingPlayer(DyingEventArgs ev)
         {
-            if (Check(ev.Player))
+            if (ev.Attacker != null && Check(ev.Attacker) && ev.Player.Role.Type != RoleTypeId.Scp0492)
             {
-                Plugin.Instance.sM.RemoveRole(this, ev.Player);
-            }
-            if (ev.Attacker != null && Check(ev.Attacker))
-            {
+                ev.IsAllowed = false;
                 ev.Player.RoleManager.ServerSetRole(RoleTypeId.Scp0492, RoleChangeReason.Respawn);
             }
+
+            base.OnKillingPlayer(ev);
         }
 
         public override Vector3 SpawnLocation { get; set; } = new(62.777f, 991.648f, -50.397f);

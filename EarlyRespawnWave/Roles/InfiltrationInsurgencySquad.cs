@@ -35,6 +35,14 @@ namespace EarlyRespawnWave.Roles
             ItemType.GrenadeFlash,
             ItemType.ArmorCombat
         };
+        public override void SubscribeEvent()
+        {
+            base.SubscribeEvent();
+        }
+        public override void UnsubscribeEvent()
+        {
+            base.UnsubscribeEvent();
+        }
         public override List<uint> CustomItemInventory { get; set; } = new()
         {
             14

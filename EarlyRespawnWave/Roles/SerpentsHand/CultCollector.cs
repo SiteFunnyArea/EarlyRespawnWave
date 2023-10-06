@@ -55,13 +55,6 @@ namespace EarlyRespawnWave.Roles
 
         public override void SubscribeEvent()
         {
-            Exiled.Events.Handlers.Scp049.Attacking += OnAttack049;
-            Exiled.Events.Handlers.Scp096.AddingTarget += OnAddingTarget;
-            Exiled.Events.Handlers.Scp106.Attacking += OnAttack106;
-            Exiled.Events.Handlers.Scp173.Blinking += Blink;
-            Exiled.Events.Handlers.Player.Shot += OnShot;
-            Exiled.Events.Handlers.Player.Hurting += OnHurting;
-            Exiled.Events.Handlers.Player.Dying += OnKillingPlayer;
             base.SubscribeEvent();
 
 
@@ -69,22 +62,13 @@ namespace EarlyRespawnWave.Roles
 
         public override void UnsubscribeEvent()
         {
-            Exiled.Events.Handlers.Scp049.Attacking -= OnAttack049;
-            Exiled.Events.Handlers.Scp096.AddingTarget -= OnAddingTarget;
-            Exiled.Events.Handlers.Scp106.Attacking -= OnAttack106;
-            Exiled.Events.Handlers.Scp173.Blinking -= Blink;
-            Exiled.Events.Handlers.Player.Shot -= OnShot;
-            Exiled.Events.Handlers.Player.Hurting -= OnHurting;
-            Exiled.Events.Handlers.Player.Dying -= OnKillingPlayer;
             base.UnsubscribeEvent();
 
         }
 
-        public void OnKillingPlayer(DyingEventArgs ev)
+        public override void OnKillingPlayer(DyingEventArgs ev)
         {
-            if (Check(ev.Player)){
-                Plugin.Instance.sM.RemoveRole(this, ev.Player);
-            }
+            base.OnKillingPlayer(ev);
             if (ev.Attacker != null && Check(ev.Attacker))
             {
                 CandyKindID c;
@@ -124,68 +108,6 @@ namespace EarlyRespawnWave.Roles
                 }
 
                 ev.Attacker.TryAddCandy(c);
-            }
-        }
-
-        public void OnAddingTarget(AddingTargetEventArgs ev)
-        {
-            if (Check(ev.Target))
-            {
-                ev.IsAllowed = false;
-            }
-        }
-        public void OnAttack049(Exiled.Events.EventArgs.Scp049.AttackingEventArgs ev)
-        {
-            if (Check(ev.Target))
-            {
-                ev.IsAllowed = false;
-            }
-        }
-        public void OnAttack106(Exiled.Events.EventArgs.Scp106.AttackingEventArgs ev)
-        {
-            if (Check(ev.Target))
-            {
-                ev.IsAllowed = false;
-            }
-        }
-
-        public void OnHurting(HurtingEventArgs ev)
-        {
-            if (ev.Player != null && ev.Player.Role != null && ev.Attacker != null && ev.Attacker.Role != null)
-            {
-                if (Check(ev.Player) && ev.Attacker.Role.Side == Exiled.API.Enums.Side.Scp || ev.Player.Role.Side == Side.Scp && Check(ev.Attacker))
-                {
-                    ev.IsAllowed = false;
-                }
-                else
-                {
-                    ev.IsAllowed = true;
-                }
-            }
-        }
-        public void OnShot(ShotEventArgs ev)
-        {
-            if (ev.Player != null && ev.Player.Role != null && ev.Target != null && ev.Target.Role != null)
-            {
-                if (Check(ev.Player) && ev.Target.Role.Side == Exiled.API.Enums.Side.Scp)
-                {
-                    ev.CanHurt = false;
-                }
-                else
-                {
-                    ev.CanHurt = true;
-                }
-            }
-        }
-
-        public void Blink(BlinkingEventArgs ev)
-        {
-            foreach(Player p in ev.Targets)
-            {
-                if (Check(p))
-                {
-                    ev.Targets.Remove(p);
-                }
             }
         }
 
