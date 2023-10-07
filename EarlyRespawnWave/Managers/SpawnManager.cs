@@ -136,28 +136,54 @@ namespace EarlyRespawnWave.Managers
 
         public ICustomRole? CheckPlayerForRole(Exiled.API.Features.Player p)
         {
-            if(p.UniqueRole.Contains("Rapid Response Team"))
+            if(Plugin.Instance.Config.RapidResponseTeam.PlayersWhoHaveRole.Contains(p))
                 return Plugin.Instance.Config.RapidResponseTeam;   
-            else if (p.UniqueRole.Contains("Infiltration Insurgency Squad"))
+            else if (Plugin.Instance.Config.InfiltrationInsurgencySquad.PlayersWhoHaveRole.Contains(p))
                 return Plugin.Instance.Config.InfiltrationInsurgencySquad;
-            else if (p.UniqueRole.Contains("Cult Leader"))
+            else if (Plugin.Instance.Config.SerpentsHand.SHLeader.PlayersWhoHaveRole.Contains(p))
                 return Plugin.Instance.Config.SerpentsHand.SHLeader;
-            else if (p.UniqueRole.Contains("Cult Silencer"))
+            else if (Plugin.Instance.Config.SerpentsHand.SHSilencer.PlayersWhoHaveRole.Contains(p))
                 return Plugin.Instance.Config.SerpentsHand.SHSilencer;
-            else if (p.UniqueRole.Contains("Cult Engineer"))
+            else if (Plugin.Instance.Config.SerpentsHand.SHEngineer.PlayersWhoHaveRole.Contains(p))
                 return Plugin.Instance.Config.SerpentsHand.SHEngineer;
-            else if (p.UniqueRole.Contains("Cult Phantom"))
+            else if (Plugin.Instance.Config.SerpentsHand.SHPhantom.PlayersWhoHaveRole.Contains(p))
                 return Plugin.Instance.Config.SerpentsHand.SHPhantom;
-            else if (p.UniqueRole.Contains("Cult Savage"))
+            else if (Plugin.Instance.Config.SerpentsHand.SHSavage.PlayersWhoHaveRole.Contains(p))
                 return Plugin.Instance.Config.SerpentsHand.SHSavage;
-            else if (p.UniqueRole.Contains("Cult Collector"))
+            else if (Plugin.Instance.Config.SerpentsHand.SHCollector.PlayersWhoHaveRole.Contains(p))
                 return Plugin.Instance.Config.SerpentsHand.SHCollector;
-            else if (p.UniqueRole.Contains("Cult Destroyer"))
+            else if (Plugin.Instance.Config.SerpentsHand.SHDestroyer.PlayersWhoHaveRole.Contains(p))
                 return Plugin.Instance.Config.SerpentsHand.SHDestroyer;
-            else if (p.UniqueRole.Contains("Cult Conscript"))
+            else if (Plugin.Instance.Config.SerpentsHand.SHConscript.PlayersWhoHaveRole.Contains(p))
                 return Plugin.Instance.Config.SerpentsHand.SHConscript;
             else
                 return null;
+        }
+
+        public bool DoesPlayerHaveRole(Exiled.API.Features.Player p)
+        {
+            if (Plugin.Instance.Config.RapidResponseTeam.PlayersWhoHaveRole.Contains(p))
+                return true;
+            else if (Plugin.Instance.Config.InfiltrationInsurgencySquad.PlayersWhoHaveRole.Contains(p))
+                return true;
+            else if (Plugin.Instance.Config.SerpentsHand.SHLeader.PlayersWhoHaveRole.Contains(p))
+                return true;
+            else if (Plugin.Instance.Config.SerpentsHand.SHSilencer.PlayersWhoHaveRole.Contains(p))
+                return true;
+            else if (Plugin.Instance.Config.SerpentsHand.SHEngineer.PlayersWhoHaveRole.Contains(p))
+                return true;
+            else if (Plugin.Instance.Config.SerpentsHand.SHPhantom.PlayersWhoHaveRole.Contains(p))
+                return true;
+            else if (Plugin.Instance.Config.SerpentsHand.SHSavage.PlayersWhoHaveRole.Contains(p))
+                return true;
+            else if (Plugin.Instance.Config.SerpentsHand.SHCollector.PlayersWhoHaveRole.Contains(p))
+                return true;
+            else if (Plugin.Instance.Config.SerpentsHand.SHDestroyer.PlayersWhoHaveRole.Contains(p))
+                return true;
+            else if (Plugin.Instance.Config.SerpentsHand.SHConscript.PlayersWhoHaveRole.Contains(p))
+                return true;
+            else
+                return false;
         }
     }
 }
