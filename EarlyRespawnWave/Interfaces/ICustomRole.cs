@@ -114,7 +114,7 @@ namespace EarlyRespawnWave.Interfaces
         //        }
         //    }
         //}
-        public void Lunging(LungingEventArgs ev)
+        public virtual void Lunging(LungingEventArgs ev)
         {
             if (Check(ev.Player) && Team == Teams.SerpentsHand)
             {
@@ -122,7 +122,7 @@ namespace EarlyRespawnWave.Interfaces
             }
         }
 
-        public void OnEndingRound(EndingRoundEventArgs e)
+        public virtual void OnEndingRound(EndingRoundEventArgs e)
         {
 
             if (Player.List.Count(t => Check(t)) > 0 && (Player.List.Count(p => p.IsNTF || p.IsCHI) > 0))
@@ -132,7 +132,7 @@ namespace EarlyRespawnWave.Interfaces
 
 
         }
-        public void OnPlayerChangeRole(ChangingRoleEventArgs ev)
+        public virtual void OnPlayerChangeRole(ChangingRoleEventArgs ev)
         {
             if (Check(ev.Player))
             {
@@ -140,7 +140,7 @@ namespace EarlyRespawnWave.Interfaces
             }
         }
 
-        public void OnKillingPlayer(DyingEventArgs ev)
+        public virtual void OnKillingPlayer(DyingEventArgs ev)
         {
             if (Check(ev.Player))
             {
@@ -149,7 +149,7 @@ namespace EarlyRespawnWave.Interfaces
         }
 
 
-        public void OnAddingTarget(AddingTargetEventArgs ev)
+        public virtual void OnAddingTarget(AddingTargetEventArgs ev)
         {
             if (Check(ev.Target) && Team == Teams.SerpentsHand)
             {
@@ -160,7 +160,7 @@ namespace EarlyRespawnWave.Interfaces
                 ev.IsAllowed = true;
             }
         }
-        public void OnAttack049(Exiled.Events.EventArgs.Scp049.AttackingEventArgs ev)
+        public virtual void OnAttack049(Exiled.Events.EventArgs.Scp049.AttackingEventArgs ev)
         {
             if (Check(ev.Target) && Team == Teams.SerpentsHand)
             {
@@ -171,7 +171,7 @@ namespace EarlyRespawnWave.Interfaces
                 ev.IsAllowed = true;
             }
         }
-        public void OnAttack106(Exiled.Events.EventArgs.Scp106.AttackingEventArgs ev)
+        public virtual void OnAttack106(Exiled.Events.EventArgs.Scp106.AttackingEventArgs ev)
         {
             if (Check(ev.Target) && Team == Teams.SerpentsHand)
             {
@@ -183,7 +183,7 @@ namespace EarlyRespawnWave.Interfaces
             }
         }
 
-        public void OnHurting(HurtingEventArgs ev)
+        public virtual void OnHurting(HurtingEventArgs ev)
         {
             if (ev.Player != null && ev.Attacker != null)
             {
@@ -202,7 +202,7 @@ namespace EarlyRespawnWave.Interfaces
                 }
             }
         }
-        public void OnShot(ShotEventArgs ev)
+        public virtual void OnShot(ShotEventArgs ev)
         {
             if (ev.Player != null && ev.Target != null)
             {
