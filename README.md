@@ -19,5 +19,5 @@ There are three teams right now that a player can spawn as when a early-game spa
 | ------------- | ------------- | ------------- | ------------- |
 | Rapid Response Team  | NtfPrivate  | 1  | First Wave (start of game)  |
 | Infiltration Insurgency Squad  | ChaosConscript  | 1  | First Wave (start of game)   |
-| Serpents Hand  | Tutorial  | 8  | Second Wave (first MTF/CI spawnwave)  |
+| Serpents Hand [DISABLED CURRENTLY]  | Tutorial  | 8  | Second Wave (first MTF/CI spawnwave)  |
 
