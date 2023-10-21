@@ -29,11 +29,6 @@ namespace EarlyRespawnWave.Commands
                     response = $"Missing {2-arguments.Count} arguments (changetickets [Team] [Amount]).";
                     return false;
                 }
-                if (Plugin.Instance._handlers.Waves > 1)
-                {
-                    response = $"Missed spawnwave.";
-                    return false;
-                }
 
                 if (!int.TryParse(arguments.At(1),out int input))
                 {

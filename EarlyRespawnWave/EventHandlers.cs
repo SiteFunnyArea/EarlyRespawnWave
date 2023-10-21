@@ -93,6 +93,7 @@ namespace EarlyRespawnWave
                 if (PreferredAnnounement.Count() > 0 && AmountSpawned > 0)
                 {
                     Exiled.API.Features.Cassie.MessageTranslated(PreferredAnnounement, Subtitles, false, true, true);
+                    AmountSpawned = 0;
                 }
 
             });
@@ -102,80 +103,84 @@ namespace EarlyRespawnWave
         {
             if(Waves < 2)
             {
-                Plugin.Instance.TimeOver = false;
-                Waves += 1;
-                TimeElapsed = Plugin.Instance.Config.Seconds;
-                _timerCoroutine = Timing.RunCoroutine(TimerCoroutine());
-                Timing.CallDelayed(Plugin.Instance.Config.Seconds, () =>
+                if (!_timerCoroutine.IsRunning)
                 {
-                    Plugin.Instance.TimeOver = true;
-                    if (_timerCoroutine.IsRunning)
-                        Timing.KillCoroutines(_timerCoroutine);
-                    //SHQueue.Add(Plugin.Instance.Config.SerpentsHand.SHLeader);
-                    //SHQueue.Add(Plugin.Instance.Config.SerpentsHand.SHSilencer);
-                    //SHQueue.Add(Plugin.Instance.Config.SerpentsHand.SHEngineer);
-                    //SHQueue.Add(Plugin.Instance.Config.SerpentsHand.SHPhantom);
-                    //SHQueue.Add(Plugin.Instance.Config.SerpentsHand.SHSavage);
-                    //SHQueue.Add(Plugin.Instance.Config.SerpentsHand.SHCollector);
-                    //SHQueue.Add(Plugin.Instance.Config.SerpentsHand.SHDestroyer);
-
-                    if (IISTickets == RRTTickets)
+                    Plugin.Instance.TimeOver = false;
+                    Waves += 1;
+                    
+                    TimeElapsed = Plugin.Instance.Config.Seconds;
+                    _timerCoroutine = Timing.RunCoroutine(TimerCoroutine());
+                    Timing.CallDelayed(Plugin.Instance.Config.Seconds, () =>
                     {
-                        int chance = UnityEngine.Random.Range(0, 100);
-                        if (chance <= 50)
-                        {
-                            PreferredAnnounement = Plugin.Instance.Config.CassieAnnouncements.IISOnlyCassie.CassieAnnouncement;
-                            Subtitles = Plugin.Instance.Config.CassieAnnouncements.IISOnlyCassie.CassieSubtitle;
+                        Plugin.Instance.TimeOver = true;
+                        if (_timerCoroutine.IsRunning)
+                            Timing.KillCoroutines(_timerCoroutine);
+                        //SHQueue.Add(Plugin.Instance.Config.SerpentsHand.SHLeader);
+                        //SHQueue.Add(Plugin.Instance.Config.SerpentsHand.SHSilencer);
+                        //SHQueue.Add(Plugin.Instance.Config.SerpentsHand.SHEngineer);
+                        //SHQueue.Add(Plugin.Instance.Config.SerpentsHand.SHPhantom);
+                        //SHQueue.Add(Plugin.Instance.Config.SerpentsHand.SHSavage);
+                        //SHQueue.Add(Plugin.Instance.Config.SerpentsHand.SHCollector);
+                        //SHQueue.Add(Plugin.Instance.Config.SerpentsHand.SHDestroyer);
 
-                            PreferredSpawn = Teams.InfiltrationInsurgencySquad;
-                        }
-                        else
+                        if (IISTickets == RRTTickets)
                         {
+                            int chance = UnityEngine.Random.Range(0, 100);
+                            if (chance <= 50)
+                            {
+                                PreferredAnnounement = Plugin.Instance.Config.CassieAnnouncements.IISOnlyCassie.CassieAnnouncement;
+                                Subtitles = Plugin.Instance.Config.CassieAnnouncements.IISOnlyCassie.CassieSubtitle;
+
+                                PreferredSpawn = Teams.InfiltrationInsurgencySquad;
+                            }
+                            else
+                            {
+                                PreferredAnnounement = Plugin.Instance.Config.CassieAnnouncements.RRTOnlyCassie.CassieAnnouncement;
+                                Subtitles = Plugin.Instance.Config.CassieAnnouncements.RRTOnlyCassie.CassieSubtitle;
+
+                                PreferredSpawn = Teams.RapidResponseTeam;
+                            }
+                        }
+                        else if (RRTTickets > IISTickets)
+                        {
+                            PreferredSpawn = Teams.RapidResponseTeam;
+
                             PreferredAnnounement = Plugin.Instance.Config.CassieAnnouncements.RRTOnlyCassie.CassieAnnouncement;
                             Subtitles = Plugin.Instance.Config.CassieAnnouncements.RRTOnlyCassie.CassieSubtitle;
-
-                            PreferredSpawn = Teams.RapidResponseTeam;
                         }
-                    }
-                    else if (RRTTickets > IISTickets)
-                    {
-                        PreferredSpawn = Teams.RapidResponseTeam;
-
-                        PreferredAnnounement = Plugin.Instance.Config.CassieAnnouncements.RRTOnlyCassie.CassieAnnouncement;
-                        Subtitles = Plugin.Instance.Config.CassieAnnouncements.RRTOnlyCassie.CassieSubtitle;
-                    }
-                    else if (RRTTickets < IISTickets)
-                    {
-                        PreferredSpawn = Teams.InfiltrationInsurgencySquad;
-
-                        PreferredAnnounement = Plugin.Instance.Config.CassieAnnouncements.IISOnlyCassie.CassieAnnouncement;
-                        Subtitles = Plugin.Instance.Config.CassieAnnouncements.IISOnlyCassie.CassieSubtitle;
-                    }
-
-
-                    foreach (Exiled.API.Features.Player p in Exiled.API.Features.Player.Get(PlayerRoles.RoleTypeId.Spectator))
-                    {
-                        //PluginAPI.Core.Log.Debug("user detected " + p.Nickname + " with info " + p.UniqueRole);
-                        AmountSpawned += 1;
-                        if (PreferredSpawn == Teams.RapidResponseTeam)
+                        else if (RRTTickets < IISTickets)
                         {
-                            spawn.SpawnClass(Plugin.Instance.Config.RapidResponseTeam, p);
+                            PreferredSpawn = Teams.InfiltrationInsurgencySquad;
+
+                            PreferredAnnounement = Plugin.Instance.Config.CassieAnnouncements.IISOnlyCassie.CassieAnnouncement;
+                            Subtitles = Plugin.Instance.Config.CassieAnnouncements.IISOnlyCassie.CassieSubtitle;
                         }
-                        else if (PreferredSpawn == Teams.InfiltrationInsurgencySquad)
+
+
+                        foreach (Exiled.API.Features.Player p in Exiled.API.Features.Player.Get(PlayerRoles.RoleTypeId.Spectator))
                         {
-                            spawn.SpawnClass(Plugin.Instance.Config.InfiltrationInsurgencySquad, p);
+                            //PluginAPI.Core.Log.Debug("user detected " + p.Nickname + " with info " + p.UniqueRole);
+                            AmountSpawned += 1;
+                            if (PreferredSpawn == Teams.RapidResponseTeam)
+                            {
+                                spawn.SpawnClass(Plugin.Instance.Config.RapidResponseTeam, p);
+                            }
+                            else if (PreferredSpawn == Teams.InfiltrationInsurgencySquad)
+                            {
+                                spawn.SpawnClass(Plugin.Instance.Config.InfiltrationInsurgencySquad, p);
+                            }
+
                         }
 
-                    }
 
+                        if (PreferredAnnounement.Count() > 0 && AmountSpawned > 0)
+                        {
+                            Exiled.API.Features.Cassie.MessageTranslated(PreferredAnnounement, Subtitles, false, true, true);
+                            AmountSpawned = 0;
+                        }
 
-                    if (PreferredAnnounement.Count() > 0 && AmountSpawned > 0)
-                    {
-                        Exiled.API.Features.Cassie.MessageTranslated(PreferredAnnounement, Subtitles, false, true, true);
-                    }
-
-                    //foreach (Exiled.API.Features.Player p in Exiled.API.Features.Player.Get(PlayerRoles.RoleTypeId.Spectator))
-                    //{
+                        //foreach (Exiled.API.Features.Player p in Exiled.API.Features.Player.Get(PlayerRoles.RoleTypeId.Spectator))
+                        //{
                         //    if(SHTeamRespawnCount < 7)
                         //{
                         //        ICustomRole? ICR = SHQueue[0];
@@ -198,8 +203,10 @@ namespace EarlyRespawnWave
                         //{
                         //    SHQueue.Clear();
                         //}
-                    //}
-                });
+                        //}
+                    });
+                }
+                  
             }
         }
         public void OnChangingRole(ChangingRoleEventArgs ev)

@@ -45,72 +45,76 @@ namespace EarlyRespawnWave.Commands
                     return false;
                 }
 
+                
+
+                Player player = Player.Get(int.Parse(arguments.At(1)));
+
                 if (arguments.At(0).Equals("RapidResponseTeam"))
                 {
-                    Player player = Player.Get(pl.PlayerId);
+                    
                     Plugin.Instance.sM.SpawnClass(Plugin.Instance.Config.RapidResponseTeam, player);
                     response = $"Gave subclass {Plugin.Instance.Config.RapidResponseTeam.Name} to {player.Nickname}.";
                     return true;
                 }
                 else if (arguments.At(0).Equals("InfiltrationInsurgencySquad"))
                 {
-                    Player player = Player.Get(pl.PlayerId);
+
                     Plugin.Instance.sM.SpawnClass(Plugin.Instance.Config.InfiltrationInsurgencySquad, player);
                     response = $"Gave subclass {Plugin.Instance.Config.InfiltrationInsurgencySquad.Name} to {player.Nickname}.";
                     return true;
                 }
                 else if (arguments.At(0).Equals("CultLeader"))
                 {
-                    Player player = Player.Get(pl.PlayerId);
+
                     Plugin.Instance.sM.SpawnClass(Plugin.Instance.Config.SerpentsHand.SHLeader, player);
                     response = $"Gave subclass {Plugin.Instance.Config.SerpentsHand.SHLeader.Name} to {player.Nickname}.";
                     return true;
                 }
                 else if (arguments.At(0).Equals("CultSilencer"))
                 {
-                    Player player = Player.Get(pl.PlayerId);
+
                     Plugin.Instance.sM.SpawnClass(Plugin.Instance.Config.SerpentsHand.SHSilencer, player);
                     response = $"Gave subclass {Plugin.Instance.Config.SerpentsHand.SHSilencer.Name} to {player.Nickname}.";
                     return true;
                 }
                 else if (arguments.At(0).Equals("CultEngineer"))
                 {
-                    Player player = Player.Get(pl.PlayerId);
+
                     Plugin.Instance.sM.SpawnClass(Plugin.Instance.Config.SerpentsHand.SHEngineer, player);
                     response = $"Gave subclass {Plugin.Instance.Config.SerpentsHand.SHEngineer.Name} to {player.Nickname}.";
                     return true;
                 }
                 else if (arguments.At(0).Equals("CultPhantom"))
                 {
-                    Player player = Player.Get(pl.PlayerId);
+
                     Plugin.Instance.sM.SpawnClass(Plugin.Instance.Config.SerpentsHand.SHPhantom, player);
                     response = $"Gave subclass {Plugin.Instance.Config.SerpentsHand.SHPhantom.Name} to {player.Nickname}.";
                     return true;
                 }
                 else if (arguments.At(0).Equals("CultSavage"))
                 {
-                    Player player = Player.Get(pl.PlayerId);
+
                     Plugin.Instance.sM.SpawnClass(Plugin.Instance.Config.SerpentsHand.SHSavage, player);
                     response = $"Gave subclass {Plugin.Instance.Config.SerpentsHand.SHSavage.Name} to {player.Nickname}.";
                     return true;
                 }
                 else if (arguments.At(0).Equals("CultCollector"))
                 {
-                    Player player = Player.Get(pl.PlayerId);
+
                     Plugin.Instance.sM.SpawnClass(Plugin.Instance.Config.SerpentsHand.SHCollector, player);
                     response = $"Gave subclass {Plugin.Instance.Config.SerpentsHand.SHCollector.Name} to {player.Nickname}.";
                     return true;
                 }
                 else if (arguments.At(0).Equals("CultDestroyer"))
                 {
-                    Player player = Player.Get(pl.PlayerId);
+
                     Plugin.Instance.sM.SpawnClass(Plugin.Instance.Config.SerpentsHand.SHDestroyer, player);
                     response = $"Gave subclass {Plugin.Instance.Config.SerpentsHand.SHDestroyer.Name} to {player.Nickname}.";
                     return true;
                 }
                 else if (arguments.At(0).Equals("CultConscript"))
                 {
-                    Player player = Player.Get(pl.PlayerId);
+
                     Plugin.Instance.sM.SpawnClass(Plugin.Instance.Config.SerpentsHand.SHConscript, player);
                     response = $"Gave subclass {Plugin.Instance.Config.SerpentsHand.SHConscript.Name} to {player.Nickname}.";
                     return true;
