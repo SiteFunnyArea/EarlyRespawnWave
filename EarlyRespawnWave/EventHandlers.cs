@@ -278,11 +278,6 @@ namespace EarlyRespawnWave
                     } 
                 }
             }
-
-            if (spawn.CheckPlayerForRole(ev.Player) != null)
-            {
-                spawn.RemoveRole(ev.Player);
-            }
         }
 
         public IEnumerator<float> TimerCoroutine()
